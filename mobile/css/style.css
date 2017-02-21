@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,700);
 body {
   background-color: #3c3c3c;
-  padding: 50px 0;
+  padding: 0px 0;
   font-family: 'Noto Sans', sans-serif;
   text-align: center;
 }
@@ -10,8 +10,8 @@ body {
   background-color: #222222;
   margin: 0 auto;
   width: 100%;
-  max-width: 320px;
-  min-height: 568px;
+  max-width: 100%;
+  min-height: 100vh;
   margin: 0 auto;
   border-radius: 8px;
   position: relative;
@@ -55,7 +55,7 @@ body {
 }
 .menu-trigger-bar:before {
   content: "";
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   display: block;
@@ -104,13 +104,13 @@ body {
 
 .logo {
   display: block;
-  width: 64px;
-  height: 64px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -52px;
-  margin-left: -32px;
+  width: 0px;
+  height: 0px;
+  position: absolute;;
+  top: 0%;
+  left: 25%;
+  margin-top: 0px;
+  margin-left: 0px;
   text-align: center;
   z-index: 10;
 }
@@ -203,9 +203,9 @@ body {
   position: absolute;
   display: block;
   width: 200%;
-  left: -53%;
-  top: -25%;
-  height: 40%;
+  left: -93%;
+  top: -55%;
+  height: 90%;
   background-color: white;
 }
 .menu-bg.middle {
@@ -214,12 +214,12 @@ body {
   transform: rotate(-45deg) scaleY(0);
 }
 .menu-bg.top {
-  left: -34%;
+  left: -54%;
   top: 0;
   transform: rotate(-45deg) translateY(-152%);
 }
 .menu-bg.bottom {
-  top: 105%;
+  top: 155%;
   transform: rotate(-45deg) translateY(25%);
   left: -20%;
 }
