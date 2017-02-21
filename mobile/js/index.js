@@ -81,7 +81,7 @@ tlClose.add("close")
 }, "close")
 .to(menuMiddle, 0.2, {
   backgroundColor: "#6295ca", ease: Power4.easeInOut
-}, "close") 
+}, "close")
 .to(menuBottom, 0.2, {
   backgroundColor: "#6295ca", ease: Power4.easeInOut
 }, "close")
@@ -134,7 +134,7 @@ openTrigger.on('click', function(){
                 tlOpen.restart();
             }
 });
-       
+
 closeTrigger.on('click', function(){
   if(tlClose.progress() < 1){
                 tlClose.play();
