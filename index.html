@@ -47,7 +47,7 @@ img {
   animation-duration: 2s;
   animation-fill-mode: forwards;
   animation-iteration-count: 1;
-  animation-timing-function: linear;
+  animation-timing-function:cubic-bezier();
 }
 
 svg {
@@ -66,7 +66,7 @@ stroke: #fff;
 stroke-width: 4;
 stroke-dasharray: 10000;
 stroke-dashoffset: 10000;
-animation: draw 3s infinite linear;
+animation: draw 4s infinite linear;
 }
 @keyframes draw {
   to {
