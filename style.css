@@ -4,6 +4,12 @@
 ********************************************************************* */
 html {
 	font-size: 62.5%;
+	/* Native smooth scrolling for anchor jumps */
+	scroll-behavior: smooth;
+	/* Root scroll container for snapping (Firefox friendly) */
+	scroll-snap-type: y mandatory;
+	scrollbar-gutter: stable both-edges;
+	height: 100%;
 }
 body {
 	font-size: 1.5em;
@@ -11,7 +17,17 @@ body {
 	font-weight: 400;
 	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 	color: #222;
+	height: 100%;
+	/* Avoid declaring overflow/scroll-snap here to prevent dual scroll containers */
 }
+
+/* Snap points on major sections */
+header, section, footer {
+	scroll-snap-align: start;
+	scroll-snap-stop: always;
+	scroll-margin-top: 0;
+}
+
 /* Grid
 ********************************************************************* */  
 .container {
@@ -229,6 +245,16 @@ header {
 	position: relative;
  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e55d87', endColorstr='#5fc3e4', GradientType=1 );
 }
+
+/* Make coming-soon full-viewport for clean snap */
+#coming-soon {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+}
+
+/* Title Section
+********************************************************************* */
 .title {
 	-webkit-align-self: center;
 	-ms-flex-item-align: center;

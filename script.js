@@ -42,24 +42,30 @@ $('.main_nav li a').click(function() {
 
 
 /*----------------------------------------------------*/
-/* Smooth Scrolling
+/* Smooth Scrolling (native)
 ------------------------------------------------------ */
 
 jQuery(document).ready(function($) {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-   $('.smoothscroll').on('click',function (e) {
-	    e.preventDefault();
+  $('.smoothscroll').off('click').on('click', function (e) {
+    const href = $(this).attr('href');
+    if (!href || !href.startsWith('#')) return;
+    const target = document.querySelector(href);
+    if (!target) return;
 
-	    var target = this.hash,
-	    $target = $(target);
+    e.preventDefault();
 
-	    $('html, body').stop().animate({
-	        'scrollTop': $target.offset().top
-	    }, 800, 'swing', function () {
-	        window.location.hash = target;
-	    });
-	});
-  
+    if (prefersReduced) {
+      target.scrollIntoView({ behavior: 'auto', block: 'start' });
+    } else {
+      // Use native smooth scrolling to avoid jQuery animate conflicts in Firefox
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Update URL without causing a jump
+    if (history.pushState) history.pushState(null, '', href);
+  });
 });
 
 

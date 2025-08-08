@@ -272,7 +272,7 @@
 
 
   <section id="coming-soon" style="padding: 80px 0; text-align: center; background: #f8f8f8;">
-    <div class="container" style="min-height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center;"></div>
+    <div class="container" style="min-height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
       <h1 style="font-size: 3em; margin-bottom: 20px;">Coming Soon</h1>
       <div class="block" style="margin: 0 auto 30px auto; width: 60px; height: 4px; background: #222;"></div>
       <p style="font-size: 1.5em; color: #555;">We're working hard to launch something amazing.<br>Stay tuned for updates!</p>
@@ -306,127 +306,6 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js'></script>
   <script src="./script.js"></script>
-  <script>
-    // Smooth scroll for anchor links with class 'smoothscroll'
-    document.querySelectorAll('a.smoothscroll[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        const targetId = this.getAttribute('href');
-        const target = document.querySelector(targetId);
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
-
-    // Mouse wheel snap scrolling
-    let isScrolling = false;
-    let scrollAccumulator = 0;
-    const scrollThreshold = 50; // Minimum accumulated scroll to trigger section change
-    const scrollResetDelay = 150; // Reset accumulator if no scroll for this time
-    let scrollResetTimeout;
-    
-    // Define sections in order (add footer)
-    const sections = ['#header', '#coming-soon', 'footer'];
-    let currentSectionIndex = 0;
-    
-    function scrollToSection(index) {
-      if (index >= 0 && index < sections.length) {
-        let selector = sections[index];
-        // For footer, use tag selector
-        const target = selector.startsWith('#') ? document.querySelector(selector) : document.querySelector(selector);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
-          currentSectionIndex = index;
-        }
-      }
-    }
-    
-    function handleWheelScroll(e) {
-      // Prevent default scrolling
-      e.preventDefault();
-      
-      // Clear the reset timeout
-      clearTimeout(scrollResetTimeout);
-      
-      // If currently scrolling, accumulate but don't trigger
-      if (isScrolling) {
-        scrollResetTimeout = setTimeout(() => {
-          scrollAccumulator = 0;
-        }, scrollResetDelay);
-        return;
-      }
-      
-      // Normalize delta for cross-browser compatibility
-      let delta = 0;
-      if (e.deltaY) {
-        delta = e.deltaY;
-      } else if (e.wheelDelta) {
-        delta = -e.wheelDelta;
-      } else if (e.detail) {
-        delta = e.detail * 40;
-      }
-      
-      // Accumulate scroll delta
-      scrollAccumulator += Math.abs(delta);
-      
-      // Check if we've accumulated enough scroll to trigger section change
-      if (scrollAccumulator >= scrollThreshold) {
-        isScrolling = true;
-        scrollAccumulator = 0;
-        
-        if (delta > 0) {
-          // Scrolling down
-          if (currentSectionIndex < sections.length - 1) {
-            scrollToSection(currentSectionIndex + 1);
-          }
-        } else {
-          // Scrolling up
-          if (currentSectionIndex > 0) {
-            scrollToSection(currentSectionIndex - 1);
-          }
-        }
-        
-        // Reset scrolling flag after animation completes
-        setTimeout(() => {
-          isScrolling = false;
-        }, 800);
-      } else {
-        // Reset accumulator if no scroll for a while
-        scrollResetTimeout = setTimeout(() => {
-          scrollAccumulator = 0;
-        }, scrollResetDelay);
-      }
-    }
-    
-    // Add wheel event listeners for cross-browser compatibility
-    window.addEventListener('wheel', handleWheelScroll, { passive: false });
-    window.addEventListener('mousewheel', handleWheelScroll, { passive: false }); // For older browsers
-    window.addEventListener('DOMMouseScroll', handleWheelScroll, { passive: false }); // For Firefox
-    
-    // Update current section based on scroll position
-    function updateCurrentSection() {
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
-      for (let i = sections.length - 1; i >= 0; i--) {
-        let selector = sections[i];
-        const section = selector.startsWith('#') ? document.querySelector(selector) : document.querySelector(selector);
-        if (section && section.offsetTop <= scrollPosition) {
-          currentSectionIndex = i;
-          break;
-        }
-      }
-    }
-    
-    // Update section on manual scroll (if user scrolls without wheel)
-    let manualScrollTimeout;
-    window.addEventListener('scroll', () => {
-      clearTimeout(manualScrollTimeout);
-      manualScrollTimeout = setTimeout(updateCurrentSection, 100);
-    });
-    
-    // Initialize current section on page load
-    window.addEventListener('load', updateCurrentSection);
-  </script>
 
 </body>
 
