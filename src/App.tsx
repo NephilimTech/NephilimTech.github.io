@@ -97,7 +97,7 @@ function App() {
               _hover={{ bg: 'whiteAlpha.200' }}
               onClick={() => scrollToSection('hero')}
             >
-              Silicon
+              Quantum
             </Button>
             <Button
               variant="ghost"
@@ -105,7 +105,7 @@ function App() {
               _hover={{ bg: 'whiteAlpha.200' }}
               onClick={() => scrollToSection('hero')}
             >
-              Quantum
+              Silicon
             </Button>
             <Button
               variant="ghost"
@@ -146,16 +146,15 @@ function App() {
         /* Firefox */
         html { scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.22) rgba(0,0,0,0.06); }
       `}</style>
-      <Box borderRadius="25px" overflow="hidden" minH="calc(100vh - 30px)" bgGradient="linear(135deg, #e55d87 0%, #5fc3e4 100%)">
+      <Box borderRadius="25px" overflow="hidden" height="calc(100vh - 30px)" bgGradient="linear(135deg, #e55d87 0%, #5fc3e4 100%)">
       {/* Hero */}
       <Box
         id="hero"
         position="relative"
-        minH="100%"
+        height="100%"
         display="flex"
         alignItems="center"
         justifyContent="center"
-        pt="60"
         overflow="hidden"
       >
         
@@ -242,7 +241,7 @@ function App() {
 
       {/* Big gradient footer (rounded, inset 25px) */}
       <Box pt="25px" bg="transparent">
-        <Box borderRadius="25px" overflow="hidden" minH="calc(100vh - 120px)" bgGradient="linear(135deg, #4e4e4eff 0%, #171b1dff 100%)" color="white" display="flex" alignItems="center" justifyContent="center">
+        <Box borderRadius="25px" overflow="hidden" height="calc(100vh - 120px)" bgGradient="linear(135deg, #4e4e4eff 0%, #171b1dff 100%)" color="white" display="flex" alignItems="center" justifyContent="center">
           <Container maxW="100%" textAlign="center">
             <VStack spacing={8}>
               <Heading as="h1" size="4xl" width="100%" textAlign="center">
