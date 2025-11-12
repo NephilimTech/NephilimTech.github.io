@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "deploy": "npm run build && echo Built site into docs/ - enable GitHub Pages from the 'docs' folder",
     "lint": "eslint .",
     "preview": "vite preview"

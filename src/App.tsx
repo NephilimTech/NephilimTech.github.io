@@ -14,6 +14,12 @@ import {
 import { keyframes } from '@emotion/react'
 import { ScrollIndicator } from './components/ScrollIndicator'
 import { MobileNavigation } from './components/MobileNavigation'
+import { GrainEffect } from './components/GrainEffect'
+import { VideoBackground } from './components/VideoBackground'
+import { BackgroundConfig } from './components/BackgroundConfig'
+import { TypewriterText } from './components/TypewriterText'
+
+type BackgroundType = 'gradient' | 'video'
 
 const logoPop = keyframes`
   0% { opacity: 0; transform: translateY(20px) scale(.35); filter: blur(4px) hue-rotate(-8deg); }
@@ -29,6 +35,7 @@ const fadeUp = keyframes`
 function App() {
   const prefersReduced = usePrefersReducedMotion()
   const [isNavVisible, setIsNavVisible] = useState(false)
+  const [backgroundType, setBackgroundType] = useState<BackgroundType>('video')
   
   // Responsive values
   // const isMobile = useBreakpointValue({ base: true, md: false })
@@ -39,6 +46,9 @@ function App() {
   const textSize = useBreakpointValue({ base: 'lg', md: '2xl' })
   const navFontSize = useBreakpointValue({ base: 'md', md: 'lg' })
   const bannerFontSize = useBreakpointValue({ base: '3xl', md: '3xl' })
+  
+  // Sample video URL - can be easily replaced
+  const videoUrl = "/test.mp4"
   
   // Simple scroll function
   const scrollToSection = (sectionId: string) => {
@@ -106,7 +116,7 @@ function App() {
           borderRadius={borderRadius}
           px={{ base: 4, md: 8 }}
           py={{ base: 3, md: 4 }}
-          backdropFilter="blur(12px) saturate(120%)"
+          backdropFilter="blur(4px) saturate(120%)"
           sx={{ WebkitBackdropFilter: 'blur(12px) saturate(120%)' }}
           opacity={1}
         >
@@ -134,20 +144,21 @@ function App() {
             </HStack>
             
             <HStack spacing={{ base: 1, md: 2 }}>
-              <Button
+                <Button
                 variant="ghost"
                 color="white"
                 fontSize={navFontSize}
-                _hover={{ bg: 'whiteAlpha.200' }}
+                transition="background 0.2s, border-radius 0.2s"
+                _hover={{ bg: 'whiteAlpha.200', borderRadius: '9999px' }}
                 onClick={() => scrollToSection('hero')}
-              >
+                >
                 Quantum
-              </Button>
+                </Button>
               <Button
                 variant="ghost"
                 color="white"
                 fontSize={navFontSize}
-                _hover={{ bg: 'whiteAlpha.200' }}
+                _hover={{ bg: 'whiteAlpha.200', borderRadius: '9999px' }}
                 onClick={() => scrollToSection('hero')}
               >
                 AI
@@ -156,7 +167,7 @@ function App() {
                 variant="ghost"
                 color="white"
                 fontSize={navFontSize}
-                _hover={{ bg: 'whiteAlpha.200' }}
+                _hover={{ bg: 'whiteAlpha.200', borderRadius: '9999px' }}
                 onClick={() => scrollToSection('hero')}
               >
                 Life Science
@@ -199,7 +210,7 @@ function App() {
         borderRadius={borderRadius}
         overflow="hidden"
         height={{ base: 'calc(100vh - 20px)', md: 'calc(100vh - 30px)' }}
-        bgGradient="linear(135deg, #e55d87 0%, #5fc3e4 100%)"
+        position="relative"
       >
       {/* Hero */}
       <Box
@@ -211,13 +222,38 @@ function App() {
         justifyContent="center"
         overflow="hidden"
       >
+        {/* Background Layer */}
+        {backgroundType === 'video' ? (
+          <VideoBackground
+            src={videoUrl}
+            fallbackImage="/wallpaper.png"
+          />
+        ) : (
+          <Box
+            position="absolute"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            bgGradient="linear(135deg, #e55d87 0%, #5fc3e4 100%)"
+            zIndex={0}
+          />
+        )}
         
+        {/* Grain Effect Overlay */}
+        <GrainEffect
+          intensity={0.5}
+          opacity={0.15}
+          animate={true}
+          speed={1}
+        />
 
         <Container
           maxW={{ base: 'container.sm', md: 'container.md' }}
           zIndex={1}
           textAlign="center"
           px={{ base: 4, md: 6 }}
+          position="relative"
         >
           <VStack spacing={{ base: 6, md: 8 }}>
             <Image
@@ -246,26 +282,23 @@ function App() {
               }}
             />
 
-            <Heading
-              as="h1"
-              size={headingSize}
+            <TypewriterText
+              heading="Nephilim"
+              taglines={[
+                "Accelerating research with AI.",
+                "Transforming data into insights.",
+                "Powering next-generation solutions.",
+                "Innovating for a smarter future."
+              ]}
+              typingSpeed={50}
+              deletingSpeed={20}
+              pauseDuration={2000}
+              cursorBlinkSpeed={400}
+              headingSize={headingSize}
+              textSize={textSize}
               color="white"
-              opacity={0}
-              animation={!prefersReduced ? `${fadeUp} 700ms ease forwards` : undefined}
-              style={{ animationDelay: '900ms' }}
-            >
-              Nephilim
-            </Heading>
-
-            <Text
-              fontSize={textSize}
-              color="white"
-              opacity={0}
-              animation={!prefersReduced ? `${fadeUp} 700ms ease forwards` : undefined}
-              style={{ animationDelay: '1050ms' }}
-            >
-              Accelerating research with AI.
-            </Text>
+              prefersReducedMotion={prefersReduced}
+            />
 
             {/* Animated Scroll Indicator */}
             <Box mt={{ base: 6, md: 8 }}>
@@ -279,6 +312,12 @@ function App() {
       </Box>
 
     </Box>
+    
+    {/* Background Configuration */}
+    {/* <BackgroundConfig
+      onBackgroundChange={setBackgroundType}
+      currentBackground={backgroundType}
+    /> */}
       {/* Coming Soon Section */}
       <Box
         id="coming-soon"
@@ -344,7 +383,7 @@ function App() {
               >
                 © Nephilim Technologies Pvt Ltd
               </Heading>
-              <HStack
+              {/* <HStack
                 spacing={{ base: 4, md: 8 }}
                 wrap="wrap"
                 justifyContent="center"
@@ -353,9 +392,9 @@ function App() {
                 <Text fontSize={{ base: 'xs', md: 'sm' }} opacity={0.85}>Privacy</Text>
                 <Text fontSize={{ base: 'xs', md: 'sm' }} opacity={0.85}>Terms</Text>
                 <Text fontSize={{ base: 'xs', md: 'sm' }} opacity={0.85}>Contact</Text>
-              </HStack>
+              </HStack> */}
               <Text fontSize={{ base: 'xs', md: 'sm' }} opacity={0.7}>
-                Dummy footer content — links, social, or small print can go here.
+                {/* Dummy footer content — links, social, or small print can go here. */}
               </Text>
             </VStack>
           </Container>
