@@ -153,11 +153,11 @@ export const MobileNavigation = ({ scrollToSection, isNavVisible }: MobileNaviga
                   py={4}
                   _hover={{ bg: 'whiteAlpha.200', transform: 'translateX(8px)' }}
                   transition="all 0.2s ease"
-                  onClick={() => handleNavClick('hero')}
+                  onClick={() => handleNavClick('quantum')}
                 >
                   Quantum
                 </Button>
-                
+                 
                 <Button
                   variant="ghost"
                   color="white"
@@ -166,7 +166,7 @@ export const MobileNavigation = ({ scrollToSection, isNavVisible }: MobileNaviga
                   py={4}
                   _hover={{ bg: 'whiteAlpha.200', transform: 'translateX(8px)' }}
                   transition="all 0.2s ease"
-                  onClick={() => handleNavClick('hero')}
+                  onClick={() => handleNavClick('ai')}
                 >
                   AI
                 </Button>
@@ -178,9 +178,21 @@ export const MobileNavigation = ({ scrollToSection, isNavVisible }: MobileNaviga
                   py={4}
                   _hover={{ bg: 'whiteAlpha.200', transform: 'translateX(8px)' }}
                   transition="all 0.2s ease"
-                  onClick={() => handleNavClick('hero')}
+                  onClick={() => handleNavClick('life-science')}
                 >
                   Life Science
+                </Button>
+                <Button
+                  variant="ghost"
+                  color="white"
+                  justifyContent="flex-start"
+                  fontSize="lg"
+                  py={4}
+                  _hover={{ bg: 'whiteAlpha.200', transform: 'translateX(8px)' }}
+                  transition="all 0.2s ease"
+                  onClick={() => handleNavClick('about')}
+                >
+                  About
                 </Button>
               </VStack>
 

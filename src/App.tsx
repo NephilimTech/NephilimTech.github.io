@@ -18,6 +18,11 @@ import { GrainEffect } from './components/GrainEffect'
 import { VideoBackground } from './components/VideoBackground'
 import { BackgroundConfig } from './components/BackgroundConfig'
 import { TypewriterText } from './components/TypewriterText'
+import { Footer } from './components/Footer'
+import { AboutSection } from './components/AboutSection'
+import { QuantumSection } from './components/QuantumSection'
+import { AISection } from './components/AISection'
+import { LifeScienceSection } from './components/LifeScienceSection'
 
 type BackgroundType = 'gradient' | 'video'
 
@@ -36,6 +41,7 @@ function App() {
   const prefersReduced = usePrefersReducedMotion()
   const [isNavVisible, setIsNavVisible] = useState(false)
   const [backgroundType, setBackgroundType] = useState<BackgroundType>('video')
+  const [grainEffectEnabled, setGrainEffectEnabled] = useState(true)
   
   // Responsive values
   // const isMobile = useBreakpointValue({ base: true, md: false })
@@ -60,7 +66,7 @@ function App() {
 
   // Simple scroll to next section
   const scrollToNext = () => {
-    scrollToSection('coming-soon')
+    scrollToSection('quantum')
   }
 
   // Handle scroll event to show/hide navbar
@@ -150,7 +156,7 @@ function App() {
                 fontSize={navFontSize}
                 transition="background 0.2s, border-radius 0.2s"
                 _hover={{ bg: 'whiteAlpha.200', borderRadius: '9999px' }}
-                onClick={() => scrollToSection('hero')}
+                onClick={() => scrollToSection('quantum')}
                 >
                 Quantum
                 </Button>
@@ -159,7 +165,7 @@ function App() {
                 color="white"
                 fontSize={navFontSize}
                 _hover={{ bg: 'whiteAlpha.200', borderRadius: '9999px' }}
-                onClick={() => scrollToSection('hero')}
+                onClick={() => scrollToSection('ai')}
               >
                 AI
               </Button>
@@ -168,9 +174,18 @@ function App() {
                 color="white"
                 fontSize={navFontSize}
                 _hover={{ bg: 'whiteAlpha.200', borderRadius: '9999px' }}
-                onClick={() => scrollToSection('hero')}
+                onClick={() => scrollToSection('life-science')}
               >
                 Life Science
+              </Button>
+              <Button
+                variant="ghost"
+                color="white"
+                fontSize={navFontSize}
+                _hover={{ bg: 'whiteAlpha.200', borderRadius: '9999px' }}
+                onClick={() => scrollToSection('about')}
+              >
+                About
               </Button>
             </HStack>
           </HStack>
@@ -313,93 +328,49 @@ function App() {
 
     </Box>
     
+    {/* Grain Effect Toggle */}
+    {/* <Box
+      position="fixed"
+      bottom={4}
+      left={4}
+      zIndex={1000}
+      bg="rgba(0, 0, 0, 0.6)"
+      backdropFilter="blur(8px)"
+      borderRadius="md"
+      p={3}
+      display="flex"
+      alignItems="center"
+      gap={2}
+    >
+      <Text color="white" fontSize="sm">Grain Effect</Text>
+      <Button
+        size="sm"
+        colorScheme={grainEffectEnabled ? "blue" : "gray"}
+        onClick={() => setGrainEffectEnabled(!grainEffectEnabled)}
+      >
+        {grainEffectEnabled ? 'ON' : 'OFF'}
+      </Button>
+    </Box> */}
+    
     {/* Background Configuration */}
     {/* <BackgroundConfig
       onBackgroundChange={setBackgroundType}
       currentBackground={backgroundType}
     /> */}
-      {/* Coming Soon Section */}
-      <Box
-        id="coming-soon"
-        minH="100vh"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        bg="gray.50"
-      >
-        <Container
-          maxW={{ base: 'container.sm', md: 'container.md' }}
-          textAlign="center"
-          px={{ base: 4, md: 6 }}
-        >
-          <Heading
-            size={{ base: 'lg', md: 'xl' }}
-            mb={{ base: 4, md: 6 }}
-          >
-            Coming Soon
-          </Heading>
-          <Box
-            width={{ base: '48px', md: '64px' }}
-            height={{ base: '3px', md: '4px' }}
-            bg="gray.800"
-            mx="auto"
-            mb={{ base: 4, md: 6 }}
-          />
-          <Text
-            fontSize={{ base: 'md', md: 'lg' }}
-            color="gray.600"
-            lineHeight={{ base: 1.6, md: 1.8 }}
-          >
-            We're working hard to launch something amazing.
-            <br />
-            Stay tuned for updates!
-          </Text>
-        </Container>
-      </Box>
+      {/* Quantum Section */}
+      <QuantumSection grainEffectEnabled={grainEffectEnabled} />
+
+      {/* AI Section */}
+      <AISection grainEffectEnabled={grainEffectEnabled} />
+
+      {/* Life Science Section */}
+      <LifeScienceSection grainEffectEnabled={grainEffectEnabled} />
+
+      {/* About Section */}
+      <AboutSection grainEffectEnabled={grainEffectEnabled} />
 
       {/* Footer Section */}
-      <Box id="footer" pt={padding} bg="transparent">
-        <Box
-          borderRadius={borderRadius}
-          overflow="hidden"
-          height={{ base: 'calc(100vh - 80px)', md: 'calc(100vh - 120px)' }}
-          bgGradient="linear(135deg, #4e4e4eff 0%, #171b1dff 100%)"
-          color="white"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Container
-            maxW="100%"
-            textAlign="center"
-            px={{ base: 4, md: 6 }}
-          >
-            <VStack spacing={{ base: 6, md: 8 }}>
-              <Heading
-                as="h1"
-                size={{ base: '2xl', md: '4xl' }}
-                width="100%"
-                textAlign="center"
-              >
-                © Nephilim Technologies Pvt Ltd
-              </Heading>
-              {/* <HStack
-                spacing={{ base: 4, md: 8 }}
-                wrap="wrap"
-                justifyContent="center"
-              >
-                <Text fontSize={{ base: 'xs', md: 'sm' }} opacity={0.85}>© Nephilim 2025</Text>
-                <Text fontSize={{ base: 'xs', md: 'sm' }} opacity={0.85}>Privacy</Text>
-                <Text fontSize={{ base: 'xs', md: 'sm' }} opacity={0.85}>Terms</Text>
-                <Text fontSize={{ base: 'xs', md: 'sm' }} opacity={0.85}>Contact</Text>
-              </HStack> */}
-              <Text fontSize={{ base: 'xs', md: 'sm' }} opacity={0.7}>
-                {/* Dummy footer content — links, social, or small print can go here. */}
-              </Text>
-            </VStack>
-          </Container>
-        </Box>
-      </Box>
+      <Footer grainEffectEnabled={grainEffectEnabled} />
     </Box>
   )
 }
