@@ -91,13 +91,13 @@ export const AISection = ({ grainEffectEnabled = false }: AISectionProps) => {
   }
 
   return (
-    <Box id="ai" pt={padding} bg="transparent">
+    <Box id="ai" pt={padding} bg="transparent" scrollMarginTop={{ base: 'calc(9vh)', md: 'calc(9vh)' }}>
       <Box
         borderRadius={borderRadius}
         overflow="hidden"
         minH="100vh"
         position="relative"
-        bg="#f5f5f0ff"
+        bgGradient="linear(135deg, #4e4e4eff 0%, #171b1dff 100%)"
       >
         {/* Grain Effect Overlay */}
         {grainEffectEnabled && (
@@ -130,7 +130,7 @@ export const AISection = ({ grainEffectEnabled = false }: AISectionProps) => {
               >
                 Artificial Intelligence
               </Heading>
-              
+
               <Box
                 width={{ base: "60px", md: "80px" }}
                 height="4px"
@@ -139,17 +139,17 @@ export const AISection = ({ grainEffectEnabled = false }: AISectionProps) => {
                 mb={8}
                 borderRadius="full"
               />
-              
+
               <Text
                 fontSize={textSize}
-                color="gray.600"
+                color="gray.400"
                 lineHeight={1.8}
                 maxW="4xl"
                 mx="auto"
                 mb={8}
               >
-                Harnessing the power of artificial intelligence to solve complex problems and drive innovation. 
-                Our AI research division develops cutting-edge machine learning models and intelligent systems 
+                Harnessing the power of artificial intelligence to solve complex problems and drive innovation.
+                Our AI research division develops cutting-edge machine learning models and intelligent systems
                 that transform data into actionable insights across industries.
               </Text>
             </Box>
@@ -160,7 +160,6 @@ export const AISection = ({ grainEffectEnabled = false }: AISectionProps) => {
                 <Box
                   key={section.id}
                   width="100%"
-                  cursor="pointer"
                   transition="all 0.3s ease"
                   animation={`${fadeIn} 0.8s ease-out`}
                   style={{ animationDelay: `${index * 0.2}s` }}
@@ -175,6 +174,7 @@ export const AISection = ({ grainEffectEnabled = false }: AISectionProps) => {
                     <Box
                       flex={{ base: 1, md: 1 }}
                       minH={{ base: '200px', md: '300px' }}
+                      h={{ base: '300px', md: '400px' }}
                       bg="gray.100"
                       position="relative"
                       overflow="hidden"
@@ -222,24 +222,22 @@ export const AISection = ({ grainEffectEnabled = false }: AISectionProps) => {
                         <Text
                           fontSize="sm"
                           fontWeight="bold"
-                          color="gray.500"
+                          color="gray.300"
                           textTransform="uppercase"
                           letterSpacing="wide"
                         >
                           {section.subtitle}
                         </Text>
 
-                        <Text
-                          as={Button}
+                        <Button
                           variant="link"
-                          fontSize="sm"
                           color="#f093fb"
                           fontWeight="semibold"
                           mt={2}
                           onClick={() => handleLearnMore(section)}
                         >
                           Click to learn more →
-                        </Text>
+                        </Button>
                       </VStack>
                     </Box>
                   </Flex>
@@ -249,7 +247,7 @@ export const AISection = ({ grainEffectEnabled = false }: AISectionProps) => {
           </VStack>
         </Container>
       </Box>
-      
+
       {/* Section Modal */}
       <SectionModal
         isOpen={isOpen}

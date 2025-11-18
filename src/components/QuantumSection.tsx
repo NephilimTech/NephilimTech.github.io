@@ -72,10 +72,10 @@ export const QuantumSection = ({ grainEffectEnabled = false }: QuantumSectionPro
       id: 3,
       title: "Nanophotonic Quantum & Bio Sensing Platform",
       subtitle: "Photonic-crystal nanocavity integrate chips for quantum-grade, biomedical and industrial sensing and readout.",
-      description: [ "We develop integrated nanophotonic sensor chips that use photonic crystal nanocavities (PCNs) as ultra-sensitive probes, combined with on-chip routing and optical readout. The same platform serves three families of applications:",
-"-    Biomedical and biochemical sensing",
-"-    Chemical spill and industrial safety monitoring",
-"-    Quantum-compatible field, strain and temperature sensing"  ].join('\n\n'),
+      description: ["We develop integrated nanophotonic sensor chips that use photonic crystal nanocavities (PCNs) as ultra-sensitive probes, combined with on-chip routing and optical readout. The same platform serves three families of applications:",
+        "-    Biomedical and biochemical sensing",
+        "-    Chemical spill and industrial safety monitoring",
+        "-    Quantum-compatible field, strain and temperature sensing"].join('\n\n'),
       image: "/quantum-placeholder-3.jpg",
       imageAlt: "Quantum Applications Visualization",
       category: "Applied Research",
@@ -88,13 +88,13 @@ export const QuantumSection = ({ grainEffectEnabled = false }: QuantumSectionPro
   }
 
   return (
-    <Box id="quantum" pt={padding} bg="transparent">
+    <Box id="quantum" pt={padding} bg="transparent" scrollMarginTop={{ base: 'calc(9vh)', md: 'calc(9vh)' }}>
       <Box
         borderRadius={borderRadius}
         overflow="hidden"
         minH="100vh"
         position="relative"
-        bg="#f5f5f0ff"
+        bgGradient="linear(135deg, #4e4e4eff 0%, #171b1dff 100%)"
       >
         {/* Grain Effect Overlay */}
         {grainEffectEnabled && (
@@ -121,31 +121,31 @@ export const QuantumSection = ({ grainEffectEnabled = false }: QuantumSectionPro
                 as="h2"
                 size={headingSize}
                 mb={6}
-                bgGradient="linear(135deg, #667eea 0%, #764ba2 100%)"
+                bgGradient="linear(135deg, #eeeeeeff 0%, #a1a1a1ff 100%)"
                 bgClip="text"
                 fontWeight="bold"
               >
                 Quantum Technology
               </Heading>
-              
+
               <Box
                 width={{ base: "60px", md: "80px" }}
                 height="4px"
-                bgGradient="linear(135deg, #667eea 0%, #764ba2 100%)"
+                bgGradient="linear(135deg, #eeeeeeff 0%, #a1a1a1ff 100%)"
                 mr="auto"
                 mb={8}
                 borderRadius="full"
               />
-              
+
               <Text
                 fontSize={textSize}
-                color="gray.600"
+                color="gray.300"
                 lineHeight={1.8}
                 maxW="4xl"
                 mx="auto"
                 mb={8}
               >
-                Our quantum research division is at the forefront of developing revolutionary quantum technologies that will transform 
+                Our quantum research division is at the forefront of developing revolutionary quantum technologies that will transform
                 industries like telecommunication, finance and healthcare.
               </Text>
             </Box>
@@ -198,36 +198,36 @@ export const QuantumSection = ({ grainEffectEnabled = false }: QuantumSectionPro
                         <Text
                           fontSize="xs"
                           fontWeight="bold"
-                          color="#667eea"
+                          color="#8a8a8aff"
                           textTransform="uppercase"
                           letterSpacing="widest"
                         >
                           {section.category}
                         </Text>
-                        
+
                         <Heading
                           as="h3"
                           size={{ base: 'lg', md: 'xl' }}
-                          bgGradient="linear(135deg, #667eea 0%, #764ba2 100%)"
+                          bgGradient="linear(135deg, #eeeeeeff 0%, #a1a1a1ff 100%)"
                           bgClip="text"
                           fontWeight="bold"
                         >
                           {section.title}
                         </Heading>
-                        
+
                         <Text
                           fontSize="sm"
                           fontWeight="bold"
-                          color="gray.500"
+                          color="gray.300"
                           textTransform="uppercase"
                           letterSpacing="wide"
                         >
                           {section.subtitle}
                         </Text>
-                        
+
                         <Button
                           variant="link"
-                          color="#667eea"
+                          color="#8a8a8aff"
                           fontWeight="semibold"
                           mt={2}
                           onClick={() => handleLearnMore(section)}
@@ -243,7 +243,7 @@ export const QuantumSection = ({ grainEffectEnabled = false }: QuantumSectionPro
           </VStack>
         </Container>
       </Box>
-      
+
       {/* Section Modal */}
       <SectionModal
         isOpen={isOpen}

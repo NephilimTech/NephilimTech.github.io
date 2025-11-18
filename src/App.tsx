@@ -42,7 +42,7 @@ function App() {
   const [isNavVisible, setIsNavVisible] = useState(false)
   const [backgroundType, setBackgroundType] = useState<BackgroundType>('video')
   const [grainEffectEnabled, setGrainEffectEnabled] = useState(true)
-  
+
   // Responsive values
   // const isMobile = useBreakpointValue({ base: true, md: false })
   const padding = useBreakpointValue({ base: '10px', md: '15px' })
@@ -52,10 +52,10 @@ function App() {
   const textSize = useBreakpointValue({ base: 'lg', md: '2xl' })
   const navFontSize = useBreakpointValue({ base: 'md', md: 'lg' })
   const bannerFontSize = useBreakpointValue({ base: '3xl', md: '3xl' })
-  
+
   // Sample video URL - can be easily replaced
-  const videoUrl = "/test.mp4"
-  
+  const videoUrl = "/bg_vid.mp4"
+
   // Simple scroll function
   const scrollToSection = (sectionId: string) => {
     const el = document.getElementById(sectionId)
@@ -69,7 +69,9 @@ function App() {
     scrollToSection('quantum')
   }
 
-  // Handle scroll event to show/hide navbar
+  const [activeSection, setActiveSection] = useState('hero')
+
+  // Handle scroll event to show/hide navbar and track active section
   useEffect(() => {
     const handleScroll = () => {
       const heroSection = document.getElementById('hero')
@@ -80,8 +82,34 @@ function App() {
       }
     }
 
+    const observerOptions = {
+      root: null,
+      rootMargin: '-50% 0px -50% 0px', // Trigger when section is in middle of viewport
+      threshold: 0
+    }
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id)
+        }
+      })
+    }
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions)
+    const sections = ['hero', 'quantum', 'ai', 'life-science', 'about']
+
+    sections.forEach(id => {
+      const element = document.getElementById(id)
+      if (element) observer.observe(element)
+    })
+
     window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      observer.disconnect()
+    }
   }, [])
 
   // Ensure page starts at top on load
@@ -91,13 +119,22 @@ function App() {
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual'
     }
-    
+
     // Force scroll to top again after a short delay to override any browser behavior
     setTimeout(() => {
       window.scrollTo(0, 0)
     }, 100)
   }, [])
 
+  const getNavbarTitle = () => {
+    switch (activeSection) {
+      case 'quantum': return 'Nephilim Quantum'
+      case 'ai': return 'Nephilim AI'
+      case 'life-science': return 'Nephilim LifeScience'
+      case 'about': return 'Nephilim Technologies'
+      default: return 'Nephilim'
+    }
+  }
 
   return (
     // outer inset so the rounded gradient box sits responsive padding from each screen edge
@@ -136,30 +173,40 @@ function App() {
                 animation={!prefersReduced ? `${logoPop} 900ms cubic-bezier(.2,.9,.2,1) forwards` : undefined}
                 aria-hidden={prefersReduced}
               />
-              <Text
-                fontSize={bannerFontSize}
-                fontWeight="bold"
-                color="white"
-                cursor="pointer"
-                onClick={() => scrollToSection('hero')}
-                _hover={{ opacity: 0.8 }}
-                transition="opacity 0.8s"
+              <Box
+                minW="300px"
+                display="flex"
+                alignItems="center"
               >
-                Nephilim
-              </Text>
+                <Text
+                  key={activeSection} // Key change triggers animation
+                  fontSize={bannerFontSize}
+                  fontWeight="bold"
+                  color="white"
+                  cursor="pointer"
+                  onClick={() => scrollToSection('hero')}
+                  _hover={{ opacity: 0.8 }}
+                  animation={`${fadeUp} 0.5s ease-out forwards`}
+                  whiteSpace="nowrap"
+                  lineHeight="1.2"
+                  pb="2px" // Slight padding for descenders
+                >
+                  {getNavbarTitle()}
+                </Text>
+              </Box>
             </HStack>
-            
+
             <HStack spacing={{ base: 1, md: 2 }}>
-                <Button
+              <Button
                 variant="ghost"
                 color="white"
                 fontSize={navFontSize}
                 transition="background 0.2s, border-radius 0.2s"
                 _hover={{ bg: 'whiteAlpha.200', borderRadius: '9999px' }}
                 onClick={() => scrollToSection('quantum')}
-                >
+              >
                 Quantum
-                </Button>
+              </Button>
               <Button
                 variant="ghost"
                 color="white"
@@ -227,109 +274,109 @@ function App() {
         height={{ base: 'calc(100vh - 20px)', md: 'calc(100vh - 30px)' }}
         position="relative"
       >
-      {/* Hero */}
-      <Box
-        id="hero"
-        position="relative"
-        height="100%"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        overflow="hidden"
-      >
-        {/* Background Layer */}
-        {backgroundType === 'video' ? (
-          <VideoBackground
-            src={videoUrl}
-            fallbackImage="/wallpaper.png"
-          />
-        ) : (
-          <Box
-            position="absolute"
-            top={0}
-            left={0}
-            right={0}
-            bottom={0}
-            bgGradient="linear(135deg, #e55d87 0%, #5fc3e4 100%)"
-            zIndex={0}
-          />
-        )}
-        
-        {/* Grain Effect Overlay */}
-        <GrainEffect
-          intensity={0.5}
-          opacity={0.15}
-          animate={true}
-          speed={1}
-        />
-
-        <Container
-          maxW={{ base: 'container.sm', md: 'container.md' }}
-          zIndex={1}
-          textAlign="center"
-          px={{ base: 4, md: 6 }}
+        {/* Hero */}
+        <Box
+          id="hero"
           position="relative"
+          height="100%"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          overflow="hidden"
         >
-          <VStack spacing={{ base: 6, md: 8 }}>
-            <Image
-              src="/neplogo.png"
-              alt="Nephilim Logo"
-              boxSize={logoSize}
-              objectFit="contain"
-              opacity={0}
-              animation={!prefersReduced ? `${logoPop} 900ms cubic-bezier(.2,.9,.2,1) forwards` : undefined}
-              aria-hidden={prefersReduced}
+          {/* Background Layer */}
+          {backgroundType === 'video' ? (
+            <VideoBackground
+              src={videoUrl}
+              fallbackImage="/wallpaper.png"
             />
-
+          ) : (
             <Box
-              width={{ base: '48px', md: '64px' }}
-              height={{ base: '3px', md: '4px' }}
-              bg="white"
-              opacity={0}
-              transform="scaleX(.7)"
-              animation={!prefersReduced ? `separator 600ms ease forwards` : undefined}
-              sx={{
-                '@keyframes separator': {
-                  from: { opacity: 0, transform: 'scaleX(.6)' },
-                  to: { opacity: 1, transform: 'scaleX(1)' },
-                },
-                animationDelay: '850ms',
-              }}
+              position="absolute"
+              top={0}
+              left={0}
+              right={0}
+              bottom={0}
+              bgGradient="linear(135deg, #e55d87 0%, #5fc3e4 100%)"
+              zIndex={0}
             />
+          )}
 
-            <TypewriterText
-              heading="Nephilim"
-              taglines={[
-                "Accelerating research with AI.",
-                "Transforming data into insights.",
-                "Powering next-generation solutions.",
-                "Innovating for a smarter future."
-              ]}
-              typingSpeed={50}
-              deletingSpeed={20}
-              pauseDuration={2000}
-              cursorBlinkSpeed={400}
-              headingSize={headingSize}
-              textSize={textSize}
-              color="white"
-              prefersReducedMotion={prefersReduced}
-            />
+          {/* Grain Effect Overlay */}
+          <GrainEffect
+            intensity={0.5}
+            opacity={0.15}
+            animate={true}
+            speed={1}
+          />
 
-            {/* Animated Scroll Indicator */}
-            <Box mt={{ base: 6, md: 8 }}>
-              <ScrollIndicator
-                onClick={() => scrollToNext()}
-                size={{ base: '32px', md: '40px' }}
+          <Container
+            maxW={{ base: 'container.sm', md: 'container.md' }}
+            zIndex={1}
+            textAlign="center"
+            px={{ base: 4, md: 6 }}
+            position="relative"
+          >
+            <VStack spacing={{ base: 6, md: 8 }}>
+              <Image
+                src="/neplogo.png"
+                alt="Nephilim Logo"
+                boxSize={logoSize}
+                objectFit="contain"
+                opacity={0}
+                animation={!prefersReduced ? `${logoPop} 900ms cubic-bezier(.2,.9,.2,1) forwards` : undefined}
+                aria-hidden={prefersReduced}
               />
-            </Box>
-          </VStack>
-        </Container>
+
+              <Box
+                width={{ base: '48px', md: '64px' }}
+                height={{ base: '3px', md: '4px' }}
+                bg="white"
+                opacity={0}
+                transform="scaleX(.7)"
+                animation={!prefersReduced ? `separator 600ms ease forwards` : undefined}
+                sx={{
+                  '@keyframes separator': {
+                    from: { opacity: 0, transform: 'scaleX(.6)' },
+                    to: { opacity: 1, transform: 'scaleX(1)' },
+                  },
+                  animationDelay: '850ms',
+                }}
+              />
+
+              <TypewriterText
+                heading="Nephilim"
+                taglines={[
+                  "Accelerating research with AI.",
+                  "Transforming data into insights.",
+                  "Powering next-generation solutions.",
+                  "Innovating for a smarter future."
+                ]}
+                typingSpeed={50}
+                deletingSpeed={20}
+                pauseDuration={2000}
+                cursorBlinkSpeed={400}
+                headingSize={headingSize}
+                textSize={textSize}
+                color="white"
+                prefersReducedMotion={prefersReduced}
+              />
+
+              {/* Animated Scroll Indicator */}
+              <Box mt={{ base: 6, md: 8 }}>
+                <ScrollIndicator
+                  onClick={() => scrollToNext()}
+                  size={{ base: '32px', md: '40px' }}
+                />
+              </Box>
+            </VStack>
+          </Container>
+        </Box>
+
       </Box>
 
-    </Box>
-    
-    {/* Grain Effect Toggle */}
-    {/* <Box
+      {/* Grain Effect Toggle */}
+      {/* <Box
       position="fixed"
       bottom={4}
       left={4}
@@ -351,9 +398,9 @@ function App() {
         {grainEffectEnabled ? 'ON' : 'OFF'}
       </Button>
     </Box> */}
-    
-    {/* Background Configuration */}
-    {/* <BackgroundConfig
+
+      {/* Background Configuration */}
+      {/* <BackgroundConfig
       onBackgroundChange={setBackgroundType}
       currentBackground={backgroundType}
     /> */}

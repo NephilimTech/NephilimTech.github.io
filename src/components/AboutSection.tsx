@@ -7,14 +7,14 @@ import {
   VStack,
   HStack,
   useBreakpointValue,
-  
+
   SimpleGrid,
   Divider,
   Flex,
   Stack,
   Image,
-  
-  
+
+
 } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
 import { GrainEffect } from './GrainEffect'
@@ -78,12 +78,12 @@ export const AboutSection = ({ grainEffectEnabled = false }: AboutSectionProps) 
   const padding = useBreakpointValue({ base: '10px', md: '15px' })
   const borderRadius = useBreakpointValue({ base: '15px', md: '25px' })
   const headingSize = useBreakpointValue({ base: '2xl', md: '3xl' })
-  
+
   const textSize = useBreakpointValue({ base: 'md', md: 'lg' })
   const teamTextSize = useBreakpointValue({ base: 'sm', md: 'md' })
-  
 
-  const paperBg = '#f8f8eaff'
+
+  const paperBg = 'linear(to-b, #fdfddfff, #f8f8cdff)'
   const paperBorder = 'gray.300'
 
   const slugify = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
@@ -96,13 +96,13 @@ export const AboutSection = ({ grainEffectEnabled = false }: AboutSectionProps) 
   }
 
   return (
-    <Box id="about" pt={padding} bg="transparent">
-      <Box borderRadius={borderRadius} overflow="hidden" minH="70vh" bg={paperBg} position="relative">
+    <Box id="about" pt={padding} bg="transparent" scrollMarginTop={{ base: 'calc(9vh)', md: 'calc(9vh)' }}>
+      <Box borderRadius={borderRadius} overflow="hidden" minH="70vh" bgGradient={paperBg} position="relative">
         {/* Grain Effect Overlay */}
         {grainEffectEnabled && (
           <GrainEffect
             intensity={0.5}
-            opacity={0.15}
+            opacity={0.9}
             animate={true}
             speed={1}
           />
@@ -122,16 +122,16 @@ export const AboutSection = ({ grainEffectEnabled = false }: AboutSectionProps) 
                 spacing={{ base: 8, lg: 12 }}
                 align="flex-start"
               >
-                <Box w="100%" bg={paperBg} borderRadius="2xl" p={{ base: 0, md: 0 }} borderWidth="0px" borderColor={paperBorder}>
+                <Box w="100%" borderRadius="2xl" p={{ base: 0, md: 0 }} borderWidth="0px" borderColor={paperBorder}>
                   <VStack align="center" spacing={4} mb={6}>
                     {/* removed the Research Bulletin heading per user request */}
                     <Heading as="h2" size={headingSize} color="gray.900" textAlign="center"
-                    bgGradient="linear(135deg, #535554ff 0%, #111111ff 100%)"
-                    bgClip="text"
-                    fontWeight="extrabold">
+                      bgGradient="linear(135deg, #535554ff 0%, #111111ff 20%)"
+                      bgClip="text"
+                      fontWeight="extrabold">
                       Solving world problems few at a time
                     </Heading>
-                    
+
                     <Divider borderColor="gray.400" />
                   </VStack>
 
@@ -169,11 +169,11 @@ export const AboutSection = ({ grainEffectEnabled = false }: AboutSectionProps) 
                       <Image
                         src="/neplogo.png"
                         alt="Nephilim Logo"
-                        boxSize="32px"
+                        boxSize="40px"
                         objectFit="contain"
                         filter="invert(1)"
                       />
-                      <Text fontSize="sm" color="gray.700">Nephilim Technologies</Text>
+                      <Text fontSize="md" color="gray.700">Nephilim Technologies</Text>
                     </HStack>
                   </Box>
 
@@ -192,50 +192,50 @@ export const AboutSection = ({ grainEffectEnabled = false }: AboutSectionProps) 
                     </Flex>
 
                     <VStack align="center" spacing={4}>
-                        {abstractParagraphs.map((paragraph) => (
-                            <Text key={paragraph.slice(0, 40)} fontSize={textSize} color="gray.900" lineHeight={1.2} textAlign="center">
-                            {paragraph}
-                          </Text>
-                        ))}
-                      </VStack>
+                      {abstractParagraphs.map((paragraph) => (
+                        <Text key={paragraph.slice(0, 40)} fontSize={textSize} color="gray.900" lineHeight={1.2} textAlign="center">
+                          {paragraph}
+                        </Text>
+                      ))}
+                    </VStack>
 
-                      {/* Author detail anchors - plain typographic styling for a PDF feel */}
-                      <Box mt={8} textAlign="left">
-                        <Divider borderColor="gray.500" />
-                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8} mt={6}>
-                          {teamMembers.map((member, idx) => (
-                            <Box key={member.name} id={slugify(member.name)} px={{ base: 2, md: 4 }} borderLeftWidth={selectedAuthorIndex === idx ? '3px' : '0px'} borderLeftColor="gray.700" pl={selectedAuthorIndex === idx ? 3 : 0}>
-                              <HStack spacing={4} align="center">
-                                <Box>
-                                  <Text fontWeight="semibold">{member.name}</Text>
-                                </Box>
-                              </HStack>
-                              <Text mt={2} color="gray.900">{member.bio}</Text>
-                              {member.affiliations && member.affiliations.length > 0 && (
-                                <HStack mt={2} spacing={2} align="center">
-                                  <Text fontSize="sm" color="gray.700">Affiliations:</Text>
-                                  <HStack spacing={2} wrap="wrap">
-                                    {member.affiliations.map((a) => (
-                                      <HStack key={a.name} spacing={1} align="center">
-                                        <Box fontSize="sm">{a.symbol}</Box>
-                                        <Text fontSize="sm" color="gray.700">{a.name}</Text>
-                                      </HStack>
-                                    ))}
-                                    {/* Nephilim is always an affiliation by default */}
-                                    <HStack spacing={1} align="center">
-                                      <Box fontSize="sm"></Box>
-                                      <Text fontSize="sm" color="gray.700">Nephilim Technologies</Text>
+                    {/* Author detail anchors - plain typographic styling for a PDF feel */}
+                    <Box mt={8} textAlign="left">
+                      <Divider borderColor="gray.500" />
+                      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8} mt={6}>
+                        {teamMembers.map((member, idx) => (
+                          <Box key={member.name} id={slugify(member.name)} px={{ base: 2, md: 4 }} borderLeftWidth={selectedAuthorIndex === idx ? '3px' : '0px'} borderLeftColor="gray.700" pl={selectedAuthorIndex === idx ? 3 : 0}>
+                            <HStack spacing={4} align="center">
+                              <Box>
+                                <Text fontWeight="semibold">{member.name}</Text>
+                              </Box>
+                            </HStack>
+                            <Text mt={2} color="gray.900">{member.bio}</Text>
+                            {member.affiliations && member.affiliations.length > 0 && (
+                              <HStack mt={2} spacing={2} align="center">
+                                <Text fontSize="sm" color="gray.700">Affiliations:</Text>
+                                <HStack spacing={2} wrap="wrap">
+                                  {member.affiliations.map((a) => (
+                                    <HStack key={a.name} spacing={1} align="center">
+                                      <Box fontSize="sm">{a.symbol}</Box>
+                                      <Text fontSize="sm" color="gray.700">{a.name}</Text>
                                     </HStack>
+                                  ))}
+                                  {/* Nephilim is always an affiliation by default */}
+                                  <HStack spacing={1} align="center">
+                                    <Box fontSize="sm"></Box>
+                                    <Text fontSize="sm" color="gray.700">Nephilim Technologies</Text>
                                   </HStack>
                                 </HStack>
-                              )}
-                              {member.expertise && member.expertise.length > 0 && (
-                                <Text fontSize="sm" color="gray.700" mt={1}>Key Expertise: {member.expertise.join(', ')}</Text>
-                              )}
-                            </Box>
-                          ))}
-                        </SimpleGrid>
-                      </Box>
+                              </HStack>
+                            )}
+                            {member.expertise && member.expertise.length > 0 && (
+                              <Text fontSize="sm" color="gray.700" mt={1}>Key Expertise: {member.expertise.join(', ')}</Text>
+                            )}
+                          </Box>
+                        ))}
+                      </SimpleGrid>
+                    </Box>
                   </Box>
                 </Box>
               </Stack>

@@ -25,17 +25,17 @@ export function Footer({ grainEffectEnabled = false }: FooterProps) {
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false)
   const [isTermsOpen, setIsTermsOpen] = useState(false)
   const [showScrollTop, setShowScrollTop] = useState(false)
-  
+
   // Responsive values matching the existing design
   const padding = useBreakpointValue({ base: '10px', md: '15px' })
   const borderRadius = useBreakpointValue({ base: '15px', md: '25px' })
   const headingSize = useBreakpointValue({ base: 'lg', md: 'lg' })
   const textSize = useBreakpointValue({ base: 'xs', md: 'sm' })
   const addressSize = useBreakpointValue({ base: '2xs', md: 'xs' })
-  
+
   const openPrivacyModal = () => setIsPrivacyOpen(true)
   const closePrivacyModal = () => setIsPrivacyOpen(false)
-  
+
   const openTermsModal = () => setIsTermsOpen(true)
   const closeTermsModal = () => setIsTermsOpen(false)
 
@@ -89,7 +89,7 @@ export function Footer({ grainEffectEnabled = false }: FooterProps) {
         <Box
           borderRadius={borderRadius}
           overflow="hidden"
-          height={{ base: 'calc(100vh - 80px)', md: 'calc(100vh - 120px)' }}
+          height={{ base: 'calc(88vh)', md: 'calc(88vh)' }}
           bgGradient="linear(135deg, #4e4e4eff 0%, #171b1dff 100%)"
           color="white"
           display="flex"
@@ -146,9 +146,9 @@ export function Footer({ grainEffectEnabled = false }: FooterProps) {
                 mx="auto"
                 px={{ base: 2, md: 4 }}
               >
-                <Text 
-                  fontSize={addressSize} 
-                  opacity={0.8} 
+                <Text
+                  fontSize={addressSize}
+                  opacity={0.8}
                   lineHeight={1.6}
                   textAlign="center"
                 >

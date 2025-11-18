@@ -1,14 +1,15 @@
+import { useState } from 'react'
 import {
   Box,
   Container,
   Heading,
   Text,
   VStack,
-  HStack,
   useBreakpointValue,
   Image,
   Flex,
   useDisclosure,
+  Button,
 } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
 import { SectionModal } from './SectionModal'
@@ -23,31 +24,50 @@ interface LifeScienceSectionProps {
   grainEffectEnabled?: boolean
 }
 
+interface LifeScienceSectionItem {
+  id: number
+  title: string
+  subtitle: string
+  description: string
+  image: string
+  imageAlt: string
+  category: string
+}
+
 export const LifeScienceSection = ({ grainEffectEnabled = false }: LifeScienceSectionProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const padding = useBreakpointValue({ base: '10px', md: '15px' })
   const borderRadius = useBreakpointValue({ base: '15px', md: '25px' })
   const headingSize = useBreakpointValue({ base: '2xl', md: '3xl' })
   const textSize = useBreakpointValue({ base: 'md', md: 'lg' })
+  const [selectedSection, setSelectedSection] = useState<LifeScienceSectionItem | null>(null)
 
-  // Life Science section data
-  const lifeScienceSection = {
-    id: 1,
-    title: "Biomedical Research",
-    subtitle: "Advancing Human Health",
-    description: "Pioneering breakthrough discoveries in biomedical research that are transforming healthcare. Our interdisciplinary approach combines cutting-edge molecular biology, advanced computational analysis, and innovative clinical research to develop next-generation therapies and diagnostic tools.",
-    image: "/lifescience-placeholder-1.jpg",
-    imageAlt: "Biomedical Research Visualization"
+  // Life Science sections data
+  const lifeScienceSections: LifeScienceSectionItem[] = [
+    {
+      id: 1,
+      title: "Biomedical Research",
+      subtitle: "Advancing Human Health",
+      description: "Pioneering breakthrough discoveries in biomedical research that are transforming healthcare. Our interdisciplinary approach combines cutting-edge molecular biology, advanced computational analysis, and innovative clinical research to develop next-generation therapies and diagnostic tools.",
+      image: "/lifescience-placeholder-1.jpg",
+      imageAlt: "Biomedical Research Visualization",
+      category: "Life Sciences"
+    }
+  ]
+
+  const handleLearnMore = (section: LifeScienceSectionItem) => {
+    setSelectedSection(section)
+    onOpen()
   }
 
   return (
-    <Box id="life-science" pt={padding} bg="transparent">
+    <Box id="life-science" pt={padding} bg="transparent" scrollMarginTop={{ base: 'calc(9vh)', md: 'calc(9vh)' }}>
       <Box
         borderRadius={borderRadius}
         overflow="hidden"
         minH="100vh"
         position="relative"
-        bg="#f5f5f0ff"
+        bgGradient="linear(135deg, #4e4e4eff 0%, #171b1dff 100%)"
       >
         {/* Grain Effect Overlay */}
         {grainEffectEnabled && (
@@ -74,127 +94,137 @@ export const LifeScienceSection = ({ grainEffectEnabled = false }: LifeScienceSe
                 as="h2"
                 size={headingSize}
                 mb={6}
-                bgGradient="linear(135deg, #4CAF50 0%, #2E7D32 100%)"
+                bgGradient="linear(135deg, #5fac61ff 0%, #38613aff 100%)"
                 bgClip="text"
                 fontWeight="bold"
               >
                 Life Sciences
               </Heading>
-              
+
               <Box
                 width={{ base: "60px", md: "80px" }}
                 height="4px"
-                bgGradient="linear(135deg, #4CAF50 0%, #2E7D32 100%)"
+                bgGradient="linear(135deg, #5fac61ff 0%, #38613aff 100%)"
                 mr="auto"
                 mb={8}
                 borderRadius="full"
               />
-              
+
               <Text
                 fontSize={textSize}
-                color="gray.600"
+                color="gray.300"
                 lineHeight={1.8}
                 maxW="4xl"
                 mx="auto"
                 mb={8}
               >
-                Advancing human health through innovative life sciences research. Our interdisciplinary teams 
-                combine biology, chemistry, and computational science to develop breakthrough therapies and 
+                Advancing human health through innovative life sciences research. Our interdisciplinary teams
+                combine biology, chemistry, and computational science to develop breakthrough therapies and
                 diagnostic tools that are transforming medicine and improving lives worldwide.
               </Text>
             </Box>
 
-            {/* Life Science Section */}
-            <Box
-              width="100%"
-              cursor="pointer"
-              onClick={onOpen}
-              transition="all 0.3s ease"
-              animation={`${fadeIn} 0.8s ease-out`}
-            >
-              <Flex
-                direction={{ base: 'column', md: 'row' }}
-                align="center"
-                justify="space-between"
-                gap={{ base: 6, md: 10 }}
-              >
-                {/* Image Section */}
+            {/* Life Science Sections */}
+            <VStack spacing={{ base: 8, md: 12 }} width="100%">
+              {lifeScienceSections.map((section, index) => (
                 <Box
-                  flex={{ base: 1, md: 1 }}
-                  minH={{ base: '200px', md: '300px' }}
-                  bg="gray.100"
-                  position="relative"
-                  overflow="hidden"
+                  key={section.id}
+                  width="100%"
+                  transition="all 0.3s ease"
+                  animation={`${fadeIn} 0.8s ease-out`}
+                  style={{ animationDelay: `${index * 0.2}s` }}
                 >
-                  <Image
-                    src={lifeScienceSection.image}
-                    alt={lifeScienceSection.imageAlt}
-                    fallbackSrc="https://via.placeholder.com/400x300/4CAF50/ffffff?text=Life+Science+Section"
-                    width="100%"
-                    height="100%"
-                    objectFit="cover"
-                  />
-                </Box>
+                  <Flex
+                    direction={{ base: 'column', md: index % 2 === 0 ? 'row' : 'row-reverse' }}
+                    align="center"
+                    justify="space-between"
+                    gap={{ base: 6, md: 10 }}
+                  >
+                    {/* Image Section */}
+                    <Box
+                      flex={{ base: 1, md: 1 }}
+                      minH={{ base: '200px', md: '300px' }}
+                      h={{ base: '300px', md: '400px' }}
+                      bg="gray.100"
+                      position="relative"
+                      overflow="hidden"
+                      borderRadius={{ base: '16px', md: '24px' }}
+                    >
+                      <Image
+                        src={section.image}
+                        alt={section.imageAlt}
+                        fallbackSrc="https://via.placeholder.com/400x300/4CAF50/ffffff?text=Life+Science+Section"
+                        width="100%"
+                        height="100%"
+                        objectFit="cover"
+                      />
+                    </Box>
 
-                {/* Text Section */}
-                <Box
-                  flex={{ base: 1, md: 1 }}
-                  p={{ base: 6, md: 10 }}
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="center"
-                >
-                  <VStack align="start" spacing={4}>
-                    <Text
-                      fontSize="sm"
-                      fontWeight="bold"
-                      color="gray.500"
-                      textTransform="uppercase"
-                      letterSpacing="wide"
+                    {/* Text Section */}
+                    <Box
+                      flex={{ base: 1, md: 1 }}
+                      p={{ base: 6, md: 10 }}
+                      display="flex"
+                      flexDirection="column"
+                      justifyContent="center"
                     >
-                      {lifeScienceSection.subtitle}
-                    </Text>
-                    
-                    <Heading
-                      as="h3"
-                      size={{ base: 'lg', md: 'xl' }}
-                      bgGradient="linear(135deg, #4CAF50 0%, #2E7D32 100%)"
-                      bgClip="text"
-                      fontWeight="bold"
-                    >
-                      {lifeScienceSection.title}
-                    </Heading>
-                    
-                    <Text
-                      fontSize={{ base: 'sm', md: 'md' }}
-                      color="gray.600"
-                      lineHeight={1.8}
-                    >
-                      {lifeScienceSection.description}
-                    </Text>
-                    
-                    <Text
-                      fontSize="sm"
-                      color="#4CAF50"
-                      fontWeight="medium"
-                      mt={2}
-                    >
-                      Click to learn more →
-                    </Text>
-                  </VStack>
+                      <VStack align="start" spacing={4}>
+                        <Text
+                          fontSize="xs"
+                          fontWeight="bold"
+                          color="#5fac61ff"
+                          textTransform="uppercase"
+                          letterSpacing="widest"
+                        >
+                          {section.category}
+                        </Text>
+
+                        <Heading
+                          as="h3"
+                          size={{ base: 'lg', md: 'xl' }}
+                          bgGradient="linear(135deg, #5fac61ff 0%, #38613aff 100%)"
+                          bgClip="text"
+                          fontWeight="bold"
+                        >
+                          {section.title}
+                        </Heading>
+
+                        <Text
+                          fontSize="sm"
+                          fontWeight="bold"
+                          color="gray.300"
+                          textTransform="uppercase"
+                          letterSpacing="wide"
+                        >
+                          {section.subtitle}
+                        </Text>
+
+                        <Button
+                          variant="link"
+                          color="#5fac61ff"
+                          fontWeight="semibold"
+                          mt={2}
+                          onClick={() => handleLearnMore(section)}
+                        >
+                          Click to learn more →
+                        </Button>
+                      </VStack>
+                    </Box>
+                  </Flex>
                 </Box>
-              </Flex>
-            </Box>
+              ))}
+            </VStack>
           </VStack>
         </Container>
       </Box>
-      
+
       {/* Section Modal */}
       <SectionModal
         isOpen={isOpen}
         onClose={onClose}
-        title="Life Sciences"
-        content="Life Sciences research is at the forefront of medical innovation, combining biological insights with technological advances to solve some of humanity's most pressing health challenges."
+        title={selectedSection?.title ?? "Life Sciences"}
+        content={selectedSection?.description}
+        category={selectedSection?.category}
         gradient="linear(135deg, #4CAF50 0%, #2E7D32 100%)"
       />
     </Box>
