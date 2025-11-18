@@ -15,9 +15,11 @@
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@radix-ui/react-slot": "^1.2.3",
+    "@types/p5": "^1.7.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.545.0",
+    "p5": "^2.1.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "tailwind-merge": "^3.3.1"

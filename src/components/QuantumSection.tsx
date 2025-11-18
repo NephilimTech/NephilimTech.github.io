@@ -1,18 +1,20 @@
+import { useState } from 'react'
 import {
   Box,
   Container,
   Heading,
   Text,
   VStack,
-  HStack,
   useBreakpointValue,
   Image,
   Flex,
   useDisclosure,
+  Button,
 } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
 import { SectionModal } from './SectionModal'
 import { GrainEffect } from './GrainEffect'
+import photonicsAnimation from '../assets/photonics_animation.gif'
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
@@ -23,40 +25,67 @@ interface QuantumSectionProps {
   grainEffectEnabled?: boolean
 }
 
+interface QuantumSectionItem {
+  id: number
+  title: string
+  subtitle: string
+  description: string
+  image: string
+  imageAlt: string
+  category: string
+}
+
 export const QuantumSection = ({ grainEffectEnabled = false }: QuantumSectionProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const padding = useBreakpointValue({ base: '10px', md: '15px' })
   const borderRadius = useBreakpointValue({ base: '15px', md: '25px' })
   const headingSize = useBreakpointValue({ base: '2xl', md: '3xl' })
   const textSize = useBreakpointValue({ base: 'md', md: 'lg' })
+  const [selectedSection, setSelectedSection] = useState<QuantumSectionItem | null>(null)
 
   // Quantum sections data
-  const quantumSections = [
+  const quantumSections: QuantumSectionItem[] = [
     {
       id: 1,
-      title: "Quantum Computing",
-      subtitle: "Revolutionary Processing Power",
-      description: "Harnessing the fundamental principles of quantum mechanics to create computing systems that can solve problems impossible for classical computers. Our quantum processors leverage superposition and entanglement to achieve unprecedented computational capabilities.",
-      image: "/quantum-placeholder-1.jpg",
-      imageAlt: "Quantum Computing Visualization"
+      title: "Quantum Photonic Interconnect & Processor",
+      subtitle: "Integrated photonic hardware for quantum information and coherent classical signal processing.",
+      description: [
+        "We design and fabricate silicon photonic chips that do two things extremely well:",
+        "- Route and multiplex quantum and classical light using high-Q photonic crystal nanocavities (PCNs), rings, and wavelength MUX/DEMUX structures.",
+        "- Implement programmable interferometer meshes that act as a configurable linear-optical processor for quantum and photonic ML experiments.",
+        "Together, these chips form the interconnect and processing layer for quantum systems: QKD nodes, photonic quantum processors, quantum repeaters and hybrid quantum–classical links."
+      ].join('\n\n'),
+      image: photonicsAnimation,
+      imageAlt: "Quantum Computing Visualization",
+      category: "Photonic Hardware",
     },
     {
       id: 2,
-      title: "Quantum Algorithms",
-      subtitle: "Advanced Computational Methods",
-      description: "Developing sophisticated quantum algorithms that can optimize complex systems, accelerate drug discovery, and enhance machine learning models. These algorithms represent the next frontier in computational problem-solving.",
-      image: "/quantum-placeholder-2.jpg",
-      imageAlt: "Quantum Algorithms Visualization"
+      title: "AI-Driven Photonic Design & Foundry Integration Studio",
+      subtitle: "AI-designed PICs for real-world applications, made manufacturable.",
+      description: "Beyond individual products, we operate an AI-driven photonic design studio focused on quantum-enabling PIC components in silicon and SiC. We work with Indian and global partners to co-design, optimise and tape-out custom photonic building blocks.",
+      image: photonicsAnimation,
+      imageAlt: "Photonic Crystal Cavity Animation",
+      category: "Photonic Platform",
     },
     {
       id: 3,
-      title: "Quantum Applications",
-      subtitle: "Real-World Solutions",
-      description: "Applying quantum computing to solve real-world challenges in cryptography, optimization, and simulation. Our research bridges theoretical quantum mechanics with practical applications that will transform industries.",
+      title: "Nanophotonic Quantum & Bio Sensing Platform",
+      subtitle: "Photonic-crystal nanocavity integrate chips for quantum-grade, biomedical and industrial sensing and readout.",
+      description: [ "We develop integrated nanophotonic sensor chips that use photonic crystal nanocavities (PCNs) as ultra-sensitive probes, combined with on-chip routing and optical readout. The same platform serves three families of applications:",
+"-    Biomedical and biochemical sensing",
+"-    Chemical spill and industrial safety monitoring",
+"-    Quantum-compatible field, strain and temperature sensing"  ].join('\n\n'),
       image: "/quantum-placeholder-3.jpg",
-      imageAlt: "Quantum Applications Visualization"
+      imageAlt: "Quantum Applications Visualization",
+      category: "Applied Research",
     }
   ]
+
+  const handleLearnMore = (section: QuantumSectionItem) => {
+    setSelectedSection(section)
+    onOpen()
+  }
 
   return (
     <Box id="quantum" pt={padding} bg="transparent">
@@ -96,7 +125,7 @@ export const QuantumSection = ({ grainEffectEnabled = false }: QuantumSectionPro
                 bgClip="text"
                 fontWeight="bold"
               >
-                Quantum Computing
+                Quantum Technology
               </Heading>
               
               <Box
@@ -116,9 +145,8 @@ export const QuantumSection = ({ grainEffectEnabled = false }: QuantumSectionPro
                 mx="auto"
                 mb={8}
               >
-                Pioneering the future of computation through quantum mechanics. Our quantum research division 
-                is at the forefront of developing revolutionary quantum technologies that will transform 
-                industries from healthcare to finance.
+                Our quantum research division is at the forefront of developing revolutionary quantum technologies that will transform 
+                industries like telecommunication, finance and healthcare.
               </Text>
             </Box>
 
@@ -128,8 +156,6 @@ export const QuantumSection = ({ grainEffectEnabled = false }: QuantumSectionPro
                 <Box
                   key={section.id}
                   width="100%"
-                  cursor="pointer"
-                  onClick={onOpen}
                   transition="all 0.3s ease"
                   animation={`${fadeIn} 0.8s ease-out`}
                   style={{ animationDelay: `${index * 0.2}s` }}
@@ -144,9 +170,11 @@ export const QuantumSection = ({ grainEffectEnabled = false }: QuantumSectionPro
                     <Box
                       flex={{ base: 1, md: 1 }}
                       minH={{ base: '200px', md: '300px' }}
+                      h={{ base: '300px', md: '400px' }}
                       bg="gray.100"
                       position="relative"
                       overflow="hidden"
+                      borderRadius={{ base: '16px', md: '24px' }}
                     >
                       <Image
                         src={section.image}
@@ -168,13 +196,13 @@ export const QuantumSection = ({ grainEffectEnabled = false }: QuantumSectionPro
                     >
                       <VStack align="start" spacing={4}>
                         <Text
-                          fontSize="sm"
+                          fontSize="xs"
                           fontWeight="bold"
-                          color="gray.500"
+                          color="#667eea"
                           textTransform="uppercase"
-                          letterSpacing="wide"
+                          letterSpacing="widest"
                         >
-                          {section.subtitle}
+                          {section.category}
                         </Text>
                         
                         <Heading
@@ -188,21 +216,24 @@ export const QuantumSection = ({ grainEffectEnabled = false }: QuantumSectionPro
                         </Heading>
                         
                         <Text
-                          fontSize={{ base: 'sm', md: 'md' }}
-                          color="gray.600"
-                          lineHeight={1.8}
+                          fontSize="sm"
+                          fontWeight="bold"
+                          color="gray.500"
+                          textTransform="uppercase"
+                          letterSpacing="wide"
                         >
-                          {section.description}
+                          {section.subtitle}
                         </Text>
                         
-                        <Text
-                          fontSize="sm"
+                        <Button
+                          variant="link"
                           color="#667eea"
-                          fontWeight="medium"
+                          fontWeight="semibold"
                           mt={2}
+                          onClick={() => handleLearnMore(section)}
                         >
                           Click to learn more →
-                        </Text>
+                        </Button>
                       </VStack>
                     </Box>
                   </Flex>
@@ -217,8 +248,9 @@ export const QuantumSection = ({ grainEffectEnabled = false }: QuantumSectionPro
       <SectionModal
         isOpen={isOpen}
         onClose={onClose}
-        title="Quantum Computing"
-        content="Quantum computing represents a fundamental shift in how we process information. By harnessing the principles of quantum mechanics, we can create systems that solve problems currently intractable for classical computers."
+        title={selectedSection?.title ?? "Quantum Technology"}
+        content={selectedSection?.description}
+        category={selectedSection?.category}
         gradient="linear(135deg, #667eea 0%, #764ba2 100%)"
       />
     </Box>

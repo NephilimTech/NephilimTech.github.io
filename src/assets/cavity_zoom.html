@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photonic Crystal Animation - Cavity Zoom</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #a0a0a0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        #canvas-container {
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <script>
+        let data = null;
+        let viewScale = 0.015; // Scale to show entire crystal
+        let offsetX = 0;
+        let offsetY = 0;
+        let animating = true;
+        let lightParticles = [];
+        let canvasWidth = 1600;
+        let canvasHeight = 1000;
+        let scaleCalculated = false;
+        
+        // Load JSON data embedded
+        fetch('phc_structure.json')
+            .then(response => response.json())
+            .then(jsonData => {
+                data = jsonData;
+                calculateViewScale();
+                initLightParticles();
+            })
+            .catch(error => {
+                console.error('Error loading data:', error);
+                alert('Please run: python start_animation_server.py\nThen open: http://localhost:8000/cavity_zoom.html');
+            });
+        
+        function calculateViewScale() {
+            if (!data || !data.holes.length) return;
+            
+            let minX = Math.min(...data.holes.map(h => h.x));
+            let maxX = Math.max(...data.holes.map(h => h.x));
+            let minY = Math.min(...data.holes.map(h => h.y));
+            let maxY = Math.max(...data.holes.map(h => h.y));
+            
+            // Add padding
+            let padding = 100; // pixels
+            let structureWidth = (maxX - minX);
+            let structureHeight = (maxY - minY);
+            
+            // Calculate scale to fit entire structure
+            let scaleX = (canvasWidth - padding * 2) / structureWidth;
+            let scaleY = (canvasHeight - padding * 2) / structureHeight;
+            viewScale = Math.min(scaleX, scaleY);
+            
+            // Center the structure
+            let centerX = (minX + maxX) / 2;
+            let centerY = (minY + maxY) / 2;
+            offsetX = canvasWidth / 2 - centerX * viewScale;
+            offsetY = canvasHeight / 2 - centerY * viewScale;
+            
+            scaleCalculated = true;
+        }
+        
+        function initLightParticles() {
+            if (!data || !data.individual_waveguides) return;
+            
+            lightParticles = [];
+            
+            // Get multimode waveguide position (where white light travels)
+            const mainY = data.waveguide.y_center; // Should be around -3000 nm
+            const mainStartX = -17000;
+            
+            // Create ONE Gaussian white light beam
+            lightParticles.push({
+                x: mainStartX,
+                y: mainY,
+                type: 'gaussian',
+                color: color(255, 255, 255),
+                beamWidth: 400, // nm - Small, focused Gaussian beam
+                progress: 0
+            });
+            
+            // Cavity resonance indicators (activated when light passes)
+            const colors = [color(255, 50, 50), color(50, 255, 50), color(50, 50, 255)];
+            data.cavities.forEach((cavity, idx) => {
+                lightParticles.push({
+                    x: cavity.x,
+                    y: cavity.y,
+                    type: 'cavity_resonance',
+                    particleColor: colors[idx],
+                    intensity: 0,
+                    active: false
+                });
+            });
+            
+            // Colored particles for each diagonal waveguide (RGB)
+            data.individual_waveguides.forEach((wg, idx) => {
+                const seg = wg.segments[0];
+                lightParticles.push({
+                    x: seg.x1,
+                    y: seg.y1,
+                    targetX: seg.x2,
+                    targetY: seg.y2,
+                    type: 'diagonal',
+                    particleColor: colors[idx],
+                    cavityIdx: idx,
+                    cavityX: data.cavities[idx].x,
+                    progress: 0,
+                    active: false,
+                    segmentData: seg
+                });
+            });
+        }
+        
+        function setup() {
+            let canvas = createCanvas(canvasWidth, canvasHeight);
+            canvas.parent('canvas-container');
+            
+            frameRate(30);
+        }
+        
+        function draw() {
+            background(160);
+            
+            if (!data || !scaleCalculated) {
+                fill(50);
+                textAlign(CENTER, CENTER);
+                textSize(20);
+                text('Loading...', width/2, height/2);
+                return;
+            }
+            
+            push();
+            translate(offsetX, offsetY);
+            
+            // Draw photonic crystal lattice area
+            if (data.holes.length > 0) {
+                let minX = Math.min(...data.holes.map(h => h.x));
+                let maxX = Math.max(...data.holes.map(h => h.x));
+                let minY = Math.min(...data.holes.map(h => h.y));
+                let maxY = Math.max(...data.holes.map(h => h.y));
+                
+                fill(145, 145, 145);
+                noStroke();
+                rect(minX * viewScale, minY * viewScale, 
+                     (maxX - minX) * viewScale, (maxY - minY) * viewScale);
+            }
+            
+            // Update and draw animated light particles
+            if (animating) {
+                lightParticles.forEach(particle => {
+                    if (particle.type === 'gaussian') {
+                        // Move Gaussian beam along multimode waveguide (matched to output beam speed)
+                        particle.x += 180;
+                        if (particle.x > 16000) {
+                            particle.x = -17000;
+                            // Reset all cavity resonances
+                            lightParticles.forEach(p => {
+                                if (p.type === 'cavity_resonance') {
+                                    p.active = false;
+                                    p.intensity = 0;
+                                }
+                            });
+                        }
+                        
+                        // Trigger cavity resonance and colored waveguides when beam passes
+                        lightParticles.forEach(dp => {
+                            if (dp.type === 'cavity_resonance' && !dp.active) {
+                                let cavityX = data.cavities[lightParticles.filter(p => p.type === 'cavity_resonance').indexOf(dp)].x;
+                                if (abs(particle.x - cavityX) < 1000) {
+                                    dp.active = true;
+                                    dp.intensity = 1.0;
+                                    
+                                    // Activate corresponding diagonal waveguide
+                                    lightParticles.forEach(wg => {
+                                        if (wg.type === 'diagonal' && wg.cavityIdx === lightParticles.filter(p => p.type === 'cavity_resonance').indexOf(dp)) {
+                                            wg.active = true;
+                                            wg.progress = 0;
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                        
+                        // Draw Gaussian beam
+                        drawGaussianBeam(particle.x * viewScale, particle.y * viewScale, 
+                                        particle.beamWidth * viewScale, color(255, 255, 255, 200));
+                    }
+                    else if (particle.type === 'cavity_resonance' && particle.active) {
+                        // Fade out cavity resonance
+                        particle.intensity *= 0.95;
+                        
+                        // Draw glowing cavity center
+                        drawCavityResonance(particle.x * viewScale, particle.y * viewScale,
+                                          particle.particleColor, particle.intensity);
+                    }
+                    else if (particle.type === 'diagonal' && particle.active) {
+                        // Move colored light along diagonal waveguide (faster)
+                        particle.progress += 0.020;
+                        particle.intensity = 1;
+                        if (particle.progress >= .9) {
+                            // Disappear at the end
+                            particle.active = false;  
+                            particle.intensity = 0;
+                            if (particle.progress >= 1.1) {  
+                                particle.progress = 0;
+                            }
+                        }
+                        
+                        // Interpolate position
+                        const seg = particle.segmentData;
+                        particle.x = seg.x1 + (seg.x2 - seg.x1) * particle.progress;
+                        particle.y = seg.y1 + (seg.y2 - seg.y1) * particle.progress;
+                        
+                        // Draw colored light as larger glow
+                        drawColoredLight(particle.x * viewScale, particle.y * viewScale, 
+                                       particle.particleColor, 900 * viewScale);
+                    }
+                });
+            }
+            
+            // Draw holes
+            noStroke();
+            fill(80, 80, 80);
+            data.holes.forEach(hole => {
+                circle(hole.x * viewScale, hole.y * viewScale, hole.r * 2 * viewScale);
+            });
+            
+            // NO CAVITY DETAILS - clean view
+            
+            pop();
+        }
+        
+        function drawGaussianBeam(x, y, width, col) {
+            // Draw small, tightly focused circular Gaussian beam
+            push();
+            noStroke();
+            let steps = 50; 
+            let maxRadius = width*2.5; // Smaller beam size
+            
+            
+            for (let r = maxRadius; r > 0; r -= maxRadius/8) {
+                let alpha = map(r, 0, maxRadius, 255, 0);
+                fill(red(col), green(col), blue(col), alpha);
+                circle(x, y, r * 2);
+            }
+            pop();
+        }
+        
+        function drawCavityResonance(x, y, col, intensity) {
+            // Draw pulsing glow at cavity center
+            push();
+            noStroke();
+            let maxRadius = 800 * viewScale;
+            for (let r = maxRadius; r > 0; r -= maxRadius/10) {
+                let alpha = map(r, 0, maxRadius, 255, 0) * intensity;
+                fill(red(col), green(col), blue(col), alpha);
+                circle(x, y, r * 2);
+            }
+            pop();
+        }
+        
+        function drawColoredLight(x, y, col, radius) {
+            // Draw colored light particle
+            push();
+            noStroke();
+            for (let r = radius; r > 0; r -= radius/8) {
+                let alpha = map(r, 0, radius, 255, 0) * 0.6;
+                fill(red(col), green(col), blue(col), alpha);
+                circle(x, y, r * 2);
+            }
+            pop();
+        }
+    </script>
+</body>
+</html>

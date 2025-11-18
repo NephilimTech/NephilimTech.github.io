@@ -1,14 +1,15 @@
+import { useState } from 'react'
 import {
   Box,
   Container,
   Heading,
   Text,
   VStack,
-  HStack,
   useBreakpointValue,
   Image,
   Flex,
   useDisclosure,
+  Button,
 } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
 import { SectionModal } from './SectionModal'
@@ -23,32 +24,71 @@ interface AISectionProps {
   grainEffectEnabled?: boolean
 }
 
+interface AISectionItem {
+  id: number
+  title: string
+  subtitle: string
+  description: string
+  image: string
+  imageAlt: string
+  category: string
+}
+
 export const AISection = ({ grainEffectEnabled = false }: AISectionProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const padding = useBreakpointValue({ base: '10px', md: '15px' })
   const borderRadius = useBreakpointValue({ base: '15px', md: '25px' })
   const headingSize = useBreakpointValue({ base: '2xl', md: '3xl' })
   const textSize = useBreakpointValue({ base: 'md', md: 'lg' })
+  const [selectedSection, setSelectedSection] = useState<AISectionItem | null>(
+    null
+  )
 
-  // AI sections data
-  const aiSections = [
+  const aiSections: AISectionItem[] = [
     {
       id: 1,
-      title: "Machine Learning",
-      subtitle: "Intelligent Systems Development",
-      description: "Creating sophisticated machine learning models that can learn from data, recognize patterns, and make intelligent decisions. Our AI systems leverage deep learning architectures to solve complex problems across various domains.",
-      image: "/ai-placeholder-1.jpg",
-      imageAlt: "Machine Learning Visualization"
+      title: 'AI Multi-Agent Orchestration Platform',
+      subtitle: 'From chaotic agents to coordinated intelligence across your stack.',
+      category: 'AI Platforms',
+      description: [
+        'Our AI multi-agent orchestration platform turns scattered experiments into a coherent, production-ready intelligence layer that spans your entire organization.',
+        '',
+        '- Coordinate specialized agents for research, data analysis, code generation, simulation, and reporting – all within a single, governed environment.',
+        '- Plug into your existing tools, APIs, and data sources so agents can act with context and traceability rather than in isolation.',
+        '- Design reusable workflows and playbooks that allow non-technical teams to safely trigger complex, multi-step AI processes.',
+        '- Monitor agent behavior, interventions, and outcomes with observability features that make AI-driven decisions auditable and explainable.',
+        '',
+        'Whether you are automating R&D workflows, augmenting engineering teams, or building AI-first products, the platform acts as the coordination fabric between people, models, and systems.',
+      ].join('\n'),
+      image:
+        'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+      imageAlt: 'AI orchestration visualization',
     },
     {
       id: 2,
-      title: "Neural Networks",
-      subtitle: "Advanced AI Architecture",
-      description: "Designing and implementing cutting-edge neural network architectures that mimic human cognitive processes. These networks power everything from natural language processing to computer vision applications.",
-      image: "/ai-placeholder-2.jpg",
-      imageAlt: "Neural Networks Visualization"
-    }
+      title: 'AI Research Companion Agent',
+      subtitle: 'A tireless collaborator for deep technical and scientific work.',
+      category: 'AI Research Tools',
+      description: [
+        'Our AI research companion agent is built for scientists, engineers, and founders who work at the edge of what is possible.',
+        '',
+        '- Ingest and digest research papers, patents, documentation, and experiment logs into a living knowledge base that is queryable in natural language.',
+        '- Propose hypotheses, generate literature reviews, and surface non-obvious connections between ideas, datasets, and prior work.',
+        '- Assist with experiment design, parameter exploration, and result interpretation across simulation, hardware, or hybrid setups.',
+        '- Produce structured summaries, figures, and draft write-ups that accelerate communication without diluting technical rigor.',
+        '',
+        'The companion agent is designed to sit beside domain experts – not replace them – amplifying their ability to explore, iterate, and communicate complex ideas at research speed.',
+      ].join('\n'),
+      image:
+        'https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?auto=format&fit=crop&w=1200&q=80',
+      imageAlt: 'AI research assistant visualization',
+    },
   ]
+
+  const handleLearnMore = (section: AISectionItem) => {
+    setSelectedSection(section)
+    onOpen()
+  }
 
   return (
     <Box id="ai" pt={padding} bg="transparent">
@@ -121,7 +161,6 @@ export const AISection = ({ grainEffectEnabled = false }: AISectionProps) => {
                   key={section.id}
                   width="100%"
                   cursor="pointer"
-                  onClick={onOpen}
                   transition="all 0.3s ease"
                   animation={`${fadeIn} 0.8s ease-out`}
                   style={{ animationDelay: `${index * 0.2}s` }}
@@ -139,6 +178,7 @@ export const AISection = ({ grainEffectEnabled = false }: AISectionProps) => {
                       bg="gray.100"
                       position="relative"
                       overflow="hidden"
+                      borderRadius={{ base: '16px', md: '24px' }}
                     >
                       <Image
                         src={section.image}
@@ -160,15 +200,15 @@ export const AISection = ({ grainEffectEnabled = false }: AISectionProps) => {
                     >
                       <VStack align="start" spacing={4}>
                         <Text
-                          fontSize="sm"
+                          fontSize="xs"
                           fontWeight="bold"
-                          color="gray.500"
+                          color="#f093fb"
                           textTransform="uppercase"
-                          letterSpacing="wide"
+                          letterSpacing="widest"
                         >
-                          {section.subtitle}
+                          {section.category}
                         </Text>
-                        
+
                         <Heading
                           as="h3"
                           size={{ base: 'lg', md: 'xl' }}
@@ -178,20 +218,25 @@ export const AISection = ({ grainEffectEnabled = false }: AISectionProps) => {
                         >
                           {section.title}
                         </Heading>
-                        
-                        <Text
-                          fontSize={{ base: 'sm', md: 'md' }}
-                          color="gray.600"
-                          lineHeight={1.8}
-                        >
-                          {section.description}
-                        </Text>
-                        
+
                         <Text
                           fontSize="sm"
+                          fontWeight="bold"
+                          color="gray.500"
+                          textTransform="uppercase"
+                          letterSpacing="wide"
+                        >
+                          {section.subtitle}
+                        </Text>
+
+                        <Text
+                          as={Button}
+                          variant="link"
+                          fontSize="sm"
                           color="#f093fb"
-                          fontWeight="medium"
+                          fontWeight="semibold"
                           mt={2}
+                          onClick={() => handleLearnMore(section)}
                         >
                           Click to learn more →
                         </Text>
@@ -209,8 +254,9 @@ export const AISection = ({ grainEffectEnabled = false }: AISectionProps) => {
       <SectionModal
         isOpen={isOpen}
         onClose={onClose}
-        title="Artificial Intelligence"
-        content="Artificial Intelligence is revolutionizing how we interact with technology and process information. Our AI research focuses on developing intelligent systems that can learn, adapt, and make decisions in complex environments."
+        title={selectedSection?.title ?? 'Artificial Intelligence'}
+        content={selectedSection?.description}
+        category={selectedSection?.category}
         gradient="linear(135deg, #f093fb 0%, #f5576c 100%)"
       />
     </Box>

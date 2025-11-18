@@ -9,8 +9,8 @@ import {
   Button,
   Text,
   VStack,
-  HStack,
   useBreakpointValue,
+  Text as ChakraText,
 } from '@chakra-ui/react'
 
 interface SectionModalProps {
@@ -19,6 +19,7 @@ interface SectionModalProps {
   title: string
   content?: string
   gradient?: string
+  category?: string
 }
 
 export const SectionModal = ({ 
@@ -26,10 +27,17 @@ export const SectionModal = ({
   onClose, 
   title, 
   content = "Additional details will be added here soon. This modal will contain more information about this section.",
-  gradient = "linear(135deg, #667eea 0%, #764ba2 100%)"
+  gradient = "linear(135deg, #667eea 0%, #764ba2 100%)",
+  category,
 }: SectionModalProps) => {
   const modalSize = useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg' })
   const borderRadius = useBreakpointValue({ base: '15px', md: '25px' })
+  const contentLines = content
+    ? content
+        .split('\n')
+        .map(line => line.trim())
+        .filter(line => line.length > 0)
+    : []
 
   return (
     <Modal 
@@ -64,26 +72,32 @@ export const SectionModal = ({
         
         <ModalBody py={6}>
           <VStack spacing={4} align="start">
-            <Text
-              fontSize={{ base: "md", md: "lg" }}
-              color="gray.700"
-              lineHeight={1.8}
-            >
-              {content}
-            </Text>
-            
-            <VStack spacing={2} align="start" pt={4}>
-              <Text
+            {category && (
+              <ChakraText
                 fontSize="sm"
-                color="gray.500"
+                color="#667eea"
+                textTransform="uppercase"
+                letterSpacing="wide"
                 fontWeight="bold"
               >
-                Key Features:
-              </Text>
-              <Text fontSize="sm" color="gray.600">• Feature 1 coming soon</Text>
-              <Text fontSize="sm" color="gray.600">• Feature 2 coming soon</Text>
-              <Text fontSize="sm" color="gray.600">• Feature 3 coming soon</Text>
-            </VStack>
+                {category}
+              </ChakraText>
+            )}
+
+            {contentLines.map((line, idx) => {
+              const isBullet = /^[-•]/.test(line)
+              const textValue = isBullet ? line.replace(/^[-•]\s*/, '') : line
+              return (
+                <Text
+                  key={`${title}-line-${idx}`}
+                  fontSize={{ base: isBullet ? 'sm' : 'md', md: isBullet ? 'md' : 'lg' }}
+                  color={isBullet ? 'gray.600' : 'gray.700'}
+                  lineHeight={1.8}
+                >
+                  {isBullet ? `• ${textValue}` : textValue}
+                </Text>
+              )
+            })}
           </VStack>
         </ModalBody>
 
