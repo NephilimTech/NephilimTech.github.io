@@ -33,37 +33,37 @@ const teamMembers = [
   {
     name: 'Aaditya Mishra',
     position: 'Chief Scientist',
-    bio: 'PhD in Quantum Computing from MIT with 15+ years of experience in AI research and development.',
+    // bio: 'PhD in Quantum Computing from MIT with 15+ years of experience in AI research and development.',
     affiliations: [{ name: 'University of Birmingham', symbol: '*' }],
-    expertise: ['Quantum Computing', 'AI Strategy', 'Research Leadership'],
+    // expertise: ['Quantum Computing', 'AI Strategy', 'Research Leadership'],
   },
   {
     name: 'Abhijit Pati',
     position: 'Chief Operating Officer',
-    bio: 'Former lead architect at Google AI with expertise in machine learning and distributed systems.',
+    // bio: 'Former lead architect at Google AI with expertise in machine learning and distributed systems.',
     affiliations: [{ name: '', symbol: '' }],
-    expertise: ['Machine Learning', 'System Architecture', 'Cloud Infrastructure'],
+    // expertise: ['Machine Learning', 'System Architecture', 'Cloud Infrastructure'],
   },
   {
     name: 'Abhishek Purohit',
     position: 'VP of Engineering',
-    bio: 'MD and PhD in Computational Biology from Stanford, focused on drug discovery and genomics.',
+    // bio: 'MD and PhD in Computational Biology from Stanford, focused on drug discovery and genomics.',
     affiliations: [{ name: 'University of Glasgow', symbol: '†' }],
-    expertise: ['Computational Biology', 'Drug Discovery', 'Genomics'],
+    // expertise: ['Computational Biology', 'Drug Discovery', 'Genomics'],
   },
   {
     name: 'Aman Singh Katariya',
     position: 'Chief Executive Officer',
-    bio: 'Former senior engineer at Microsoft with deep expertise in scalable software solutions.',
+    // bio: 'Former senior engineer at Microsoft with deep expertise in scalable software solutions.',
     affiliations: [{ name: 'IIT Delhi', symbol: '‡' }],
-    expertise: ['Software Engineering', 'Scalability', 'DevOps'],
+    // expertise: ['Software Engineering', 'Scalability', 'DevOps'],
   },
   {
     name: 'Ojas Singh',
     position: 'Chief Technology Officer',
-    bio: 'Former senior engineer at Microsoft with deep expertise in scalable software solutions.',
+    // bio: 'Former senior engineer at Microsoft with deep expertise in scalable software solutions.',
     affiliations: [{ name: 'Maynooth University', symbol: '§' }],
-    expertise: ['Software Engineering', 'Scalability', 'DevOps'],
+    // expertise: ['Software Engineering', 'Scalability', 'DevOps'],
   },
 ]
 
@@ -210,7 +210,7 @@ export const AboutSection = ({ grainEffectEnabled = false }: AboutSectionProps) 
                                 <Text fontWeight="semibold">{member.name}</Text>
                               </Box>
                             </HStack>
-                            <Text mt={2} color="gray.900">{member.bio}</Text>
+                            {/* <Text mt={2} color="gray.900">{member.bio}</Text> */}
                             {member.affiliations && member.affiliations.length > 0 && (
                               <HStack mt={2} spacing={2} align="center">
                                 <Text fontSize="sm" color="gray.700">Affiliations:</Text>
@@ -229,9 +229,9 @@ export const AboutSection = ({ grainEffectEnabled = false }: AboutSectionProps) 
                                 </HStack>
                               </HStack>
                             )}
-                            {member.expertise && member.expertise.length > 0 && (
+                            {/* {member.expertise && member.expertise.length > 0 && (
                               <Text fontSize="sm" color="gray.700" mt={1}>Key Expertise: {member.expertise.join(', ')}</Text>
-                            )}
+                            )} */}
                           </Box>
                         ))}
                       </SimpleGrid>

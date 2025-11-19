@@ -15,6 +15,7 @@ import { keyframes } from '@emotion/react'
 import { SectionModal } from './SectionModal'
 import { GrainEffect } from './GrainEffect'
 import photonicsAnimation from '../assets/photonics_animation.gif'
+import interconnectAnimation from '../assets/interconnect.gif'
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
@@ -64,22 +65,22 @@ export const QuantumSection = ({ grainEffectEnabled = false }: QuantumSectionPro
       title: "AI-Driven Photonic Design & Foundry Integration Studio",
       subtitle: "AI-designed PICs for real-world applications, made manufacturable.",
       description: "Beyond individual products, we operate an AI-driven photonic design studio focused on quantum-enabling PIC components in silicon and SiC. We work with Indian and global partners to co-design, optimise and tape-out custom photonic building blocks.",
-      image: photonicsAnimation,
+      image: interconnectAnimation,
       imageAlt: "Photonic Crystal Cavity Animation",
       category: "Photonic Platform",
     },
-    {
-      id: 3,
-      title: "Nanophotonic Quantum & Bio Sensing Platform",
-      subtitle: "Photonic-crystal nanocavity integrate chips for quantum-grade, biomedical and industrial sensing and readout.",
-      description: ["We develop integrated nanophotonic sensor chips that use photonic crystal nanocavities (PCNs) as ultra-sensitive probes, combined with on-chip routing and optical readout. The same platform serves three families of applications:",
-        "-    Biomedical and biochemical sensing",
-        "-    Chemical spill and industrial safety monitoring",
-        "-    Quantum-compatible field, strain and temperature sensing"].join('\n\n'),
-      image: "/quantum-placeholder-3.jpg",
-      imageAlt: "Quantum Applications Visualization",
-      category: "Applied Research",
-    }
+    // {
+    //   id: 3,
+    //   title: "Nanophotonic Quantum & Bio Sensing Platform",
+    //   subtitle: "Photonic-crystal nanocavity integrate chips for quantum-grade, biomedical and industrial sensing and readout.",
+    //   description: ["We develop integrated nanophotonic sensor chips that use photonic crystal nanocavities (PCNs) as ultra-sensitive probes, combined with on-chip routing and optical readout. The same platform serves three families of applications:",
+    //     "-    Biomedical and biochemical sensing",
+    //     "-    Chemical spill and industrial safety monitoring",
+    //     "-    Quantum-compatible field, strain and temperature sensing"].join('\n\n'),
+    //   image: "/quantum-placeholder-3.jpg",
+    //   imageAlt: "Quantum Applications Visualization",
+    //   category: "Applied Research",
+    // }
   ]
 
   const handleLearnMore = (section: QuantumSectionItem) => {

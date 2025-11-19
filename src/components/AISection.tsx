@@ -14,6 +14,7 @@ import {
 import { keyframes } from '@emotion/react'
 import { SectionModal } from './SectionModal'
 import { GrainEffect } from './GrainEffect'
+import aiAnimation from '../assets/Multi_agnet.png'
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
@@ -60,29 +61,28 @@ export const AISection = ({ grainEffectEnabled = false }: AISectionProps) => {
         '',
         'Whether you are automating R&D workflows, augmenting engineering teams, or building AI-first products, the platform acts as the coordination fabric between people, models, and systems.',
       ].join('\n'),
-      image:
-        'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+      image: aiAnimation,
       imageAlt: 'AI orchestration visualization',
     },
-    {
-      id: 2,
-      title: 'AI Research Companion Agent',
-      subtitle: 'A tireless collaborator for deep technical and scientific work.',
-      category: 'AI Research Tools',
-      description: [
-        'Our AI research companion agent is built for scientists, engineers, and founders who work at the edge of what is possible.',
-        '',
-        '- Ingest and digest research papers, patents, documentation, and experiment logs into a living knowledge base that is queryable in natural language.',
-        '- Propose hypotheses, generate literature reviews, and surface non-obvious connections between ideas, datasets, and prior work.',
-        '- Assist with experiment design, parameter exploration, and result interpretation across simulation, hardware, or hybrid setups.',
-        '- Produce structured summaries, figures, and draft write-ups that accelerate communication without diluting technical rigor.',
-        '',
-        'The companion agent is designed to sit beside domain experts – not replace them – amplifying their ability to explore, iterate, and communicate complex ideas at research speed.',
-      ].join('\n'),
-      image:
-        'https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?auto=format&fit=crop&w=1200&q=80',
-      imageAlt: 'AI research assistant visualization',
-    },
+    // {
+    //   id: 2,
+    //   title: 'AI Research Companion Agent',
+    //   subtitle: 'A tireless collaborator for deep technical and scientific work.',
+    //   category: 'AI Research Tools',
+    //   description: [
+    //     'Our AI research companion agent is built for scientists, engineers, and founders who work at the edge of what is possible.',
+    //     '',
+    //     '- Ingest and digest research papers, patents, documentation, and experiment logs into a living knowledge base that is queryable in natural language.',
+    //     '- Propose hypotheses, generate literature reviews, and surface non-obvious connections between ideas, datasets, and prior work.',
+    //     '- Assist with experiment design, parameter exploration, and result interpretation across simulation, hardware, or hybrid setups.',
+    //     '- Produce structured summaries, figures, and draft write-ups that accelerate communication without diluting technical rigor.',
+    //     '',
+    //     'The companion agent is designed to sit beside domain experts – not replace them – amplifying their ability to explore, iterate, and communicate complex ideas at research speed.',
+    //   ].join('\n'),
+    //   image:
+    //     'https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?auto=format&fit=crop&w=1200&q=80',
+    //   imageAlt: 'AI research assistant visualization',
+    // },
   ]
 
   const handleLearnMore = (section: AISectionItem) => {

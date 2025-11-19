@@ -14,6 +14,7 @@ import {
 import { keyframes } from '@emotion/react'
 import { SectionModal } from './SectionModal'
 import { GrainEffect } from './GrainEffect'
+import lifeScienceAnimation from '../assets/Design_biologics.png'
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
@@ -46,12 +47,12 @@ export const LifeScienceSection = ({ grainEffectEnabled = false }: LifeScienceSe
   const lifeScienceSections: LifeScienceSectionItem[] = [
     {
       id: 1,
-      title: "Biomedical Research",
-      subtitle: "Advancing Human Health",
-      description: "Pioneering breakthrough discoveries in biomedical research that are transforming healthcare. Our interdisciplinary approach combines cutting-edge molecular biology, advanced computational analysis, and innovative clinical research to develop next-generation therapies and diagnostic tools.",
-      image: "/lifescience-placeholder-1.jpg",
-      imageAlt: "Biomedical Research Visualization",
-      category: "Life Sciences"
+      title: "In-silico Biologics Platform",
+      subtitle: "Precision Engineering at Molecular Scale",
+      description: "Our proprietary platform revolutionizes the development of biologics by moving the design process into the digital realm. We utilize high-fidelity simulations and machine learning to predict protein structure, function, and developability, enabling the creation of optimized therapeutic candidates faster and more efficiently than traditional methods.",
+      image: lifeScienceAnimation,
+      imageAlt: "In-silico Biologics Design Visualization",
+      category: "Computational Biology"
     }
   ]
 
@@ -98,7 +99,7 @@ export const LifeScienceSection = ({ grainEffectEnabled = false }: LifeScienceSe
                 bgClip="text"
                 fontWeight="bold"
               >
-                Life Sciences
+                Life Science
               </Heading>
 
               <Box
@@ -118,9 +119,7 @@ export const LifeScienceSection = ({ grainEffectEnabled = false }: LifeScienceSe
                 mx="auto"
                 mb={8}
               >
-                Advancing human health through innovative life sciences research. Our interdisciplinary teams
-                combine biology, chemistry, and computational science to develop breakthrough therapies and
-                diagnostic tools that are transforming medicine and improving lives worldwide.
+                Accelerating the future of medicine with our premier In-silico Biologics Design platform. We harness the power of advanced computational modeling and artificial intelligence to engineer next-generation biologics with superior efficacy and developability.
               </Text>
             </Box>
 
@@ -222,7 +221,7 @@ export const LifeScienceSection = ({ grainEffectEnabled = false }: LifeScienceSe
       <SectionModal
         isOpen={isOpen}
         onClose={onClose}
-        title={selectedSection?.title ?? "Life Sciences"}
+        title={selectedSection?.title ?? "In-silico Biologics Design"}
         content={selectedSection?.description}
         category={selectedSection?.category}
         gradient="linear(135deg, #4CAF50 0%, #2E7D32 100%)"
